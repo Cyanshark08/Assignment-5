@@ -15,6 +15,10 @@ public:
 	Student() : name("unknown"), gradeLevel("unknown"), GPA(0.0)
 	{}
 
+	Student(const Student &obj)
+		: name(obj.name), gradeLevel(obj.gradeLevel), GPA(obj.GPA)
+	{}
+
 	//mutator 
 	void setName(string newName)
 	{

@@ -1,9 +1,12 @@
 #include "SinglyListApp.h"
 #include "Input.h"
+#include <iterator>
+
 
 SinglyListApp::SinglyListApp()
 {
 	m_MenuState = MenuState::Selection;
+	numOfNodes = 0;
 }
 
 void SinglyListApp::Run()
@@ -18,7 +21,7 @@ void SinglyListApp::Run()
 		std::cout << "\n\n\t2. Singly Linked List Container";
 		std::cout << "\n\t" << std::string(110, 205);
 		std::cout << "\n\t\tA. push_front(entry) - pushes an element at the beginning of the list";
-		std::cout << "\n\t\tB. push (append) an element at the end of the list";
+		std::cout << "\n\t\tB. push (append) an element to the end of the list";
 		std::cout << "\n\t\tC. insert_after(pos) - inserts an element after the given position";
 		std::cout << "\n\t\tD. pop_front() - pops an element from the beginning of the list";
 		std::cout << "\n\t\tE. pop an element from the end of the list";
@@ -65,29 +68,152 @@ void SinglyListApp::HandleInput(char p_Input)
 	case 'A': // push_front
 		// push the student to the front
 		m_List.push_front(this->getStudent());
+		numOfNodes++;
+
+		std::cout << "\n\tSuccessfully pushed the student to the front of the list.";
 		break;
 
-	case 'B': // push_back
+	case 'B': // push an element to the back
 		// empty list
 		if (m_List.empty())
 			m_List.push_front(this->getStudent());
 		else
 		{
 			auto it = m_List.begin();
+			// move the iterator to the last node
+			advance(it, numOfNodes - 1);
 
-			// iterate until the iterator is one before the end
-			while (next(it) != m_List.end())
-				it++;
-
-			// insert the element at the iterator's position
+			// insert the element
 			m_List.insert_after(it, this->getStudent());
 		}
-		break;
-		
-	case 'C': // insert_after
+		numOfNodes++;
 
+		std::cout << "\n\tSuccessfully pushed (appended) the student to the back of the list.";
+		break;
+
+	case 'C': // insert_after
+	{
+		if (m_List.empty())
+		{
+			std::cout << "\n\tERROR Cannot use 'insert_after' on an empty list.";
+			break;
+		}
+
+		Student temp(this->getStudent());
+		// get the position of the node/ iterator
+		size_t pos = Input::inputInteger("\n\tEnter the node (position) to insert the student after: ", 0, numOfNodes - 1);
+
+		// move the iterator to the node
+		auto it = m_List.begin();
+		advance(it, pos);
+
+		// insert the element
+		m_List.insert_after(it, temp);
+		numOfNodes++;
+
+		std::cout << "\n\tSuccessfuly inserted the student after position (" << pos << ").";
+		break;
 	}
 
+	case 'D': // pop_front
+		if (m_List.empty())
+		{
+			std::cout << "\n\tERROR: Cannot pop on an empty list.";
+			break;
+		}
+		m_List.pop_front();
+		numOfNodes--;
+		std::cout << "\n\tSuccessfully popped (removed) a student from the front.";
+		break;
+
+	case 'E': // pop an element at the back
+		if (m_List.empty())
+		{
+			std::cout << "\n\tERROR: Cannot pop from an empty list.";
+			break;
+		}
+
+		// one element in list
+		if (numOfNodes == 1)
+			m_List.pop_front();
+		else
+		{
+			auto it = m_List.begin();
+			// move iterator to the 2nd to last node
+			advance(it, numOfNodes - 2);
+
+			// pop (erase) the element
+			m_List.erase_after(it);
+		}
+		numOfNodes--;
+		std::cout << "\n\tSuccessfully popped (removed) a student from the back.";
+		break;
+
+	case 'F': // remove
+	{
+		if (m_List.empty())
+		{
+			std::cout << "\n\tERROR: Cannot remove from an empty list.";
+			break;
+		}
+		size_t sizeBefore = numOfNodes;
+
+		std::cout << "\n\tEnter the details of the student to remove:";
+		Student temp = this->getStudent();
+
+		// remove the student
+		m_List.remove(temp);
+
+		// recalculate the number of nodes
+		numOfNodes = distance(m_List.begin(), m_List.end());
+
+		size_t removedElements = sizeBefore - numOfNodes;
+		if (removedElements != 0)
+			std::cout << "\n\tSuccessfully removed " << removedElements << " from the list.";
+		else
+			std::cout << "\n\tNo instances of the student were removed.";
+		break;
+	}
+
+	case 'G': // remove_if
+	{
+		// display submenu
+
+		break;
+	}
+
+	case 'H': // erase_after
+	{
+		if (m_List.empty())
+		{
+			std::cout << "\n\tERROR: Cannot erase from an empty list.";
+			break;
+		}
+
+		size_t sizeBefore = numOfNodes;
+		size_t pos = Input::inputInteger("\n\tEnter the node (position) to delete elements after: ", 0, numOfNodes - 1);
+
+		// erase the students
+		auto it = m_List.begin();
+		advance(it, pos);
+		m_List.erase_after(it);
+
+		// recalculate the number of nodes
+		numOfNodes = distance(m_List.begin(), m_List.end());
+
+		size_t removedElements = sizeBefore - numOfNodes;
+		if (removedElements != 0)
+			std::cout << "\n\tSuccessfully erased " << removedElements << " from the list.";
+		else
+			std::cout << "\n\tNo instances of the student were removed.";
+		break;
+	}
+
+	case 'I':
+		break;
+
+		std::system("pause");
+	}
 }
 
 Student SinglyListApp::getStudent() const
@@ -98,7 +224,7 @@ Student SinglyListApp::getStudent() const
 	// get student info
 	strncpy_s(name, (Input::inputString("\n\tEnter a new student name: ", true)).c_str(), 51);
 	strncpy_s(level, (Input::inputString("\tEnter their grade level (1-Freshman, 2-Sophmore, 3-Junior, or 4-Senior): ", "1234")).c_str(), 2);
-	float gpa = Input::inputDouble("\n\tEnter their gpa (0.0...4.0): ", 0.0, 4.0);
+	float gpa = Input::inputDouble("\tEnter their gpa (0.0...4.0): ", 0.0, 4.0);
 
 	// set the student
 	Student temp;

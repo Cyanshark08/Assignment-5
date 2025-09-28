@@ -4,7 +4,6 @@
 #include "Student.h"
 #include <iostream>
 #include <forward_list>
-#include <iterator>
 
 class SinglyListApp : public SubApp
 {
@@ -32,5 +31,6 @@ private:
 private:
 	MenuState m_MenuState;
 	forward_list<Student> m_List;
+	int numOfNodes;
 };
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -129,6 +129,7 @@
     <ClCompile Include="src\ExceptionInterface.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\SinglyListApp.cpp" />
     <ClCompile Include="src\SubApp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +138,8 @@
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\ExceptionInterface.h" />
     <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\SinglyListApp.h" />
+    <ClInclude Include="src\Student.h" />
     <ClInclude Include="src\SubApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

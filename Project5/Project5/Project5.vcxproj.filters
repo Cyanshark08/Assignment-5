@@ -33,7 +33,7 @@
     <ClCompile Include="src\CircularLinkedList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CircularListApp.cpp">
+    <ClCompile Include="src\SinglyListApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,7 +53,10 @@
     <ClInclude Include="src\CircularLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CircularListApp.h">
+    <ClInclude Include="src\SinglyListApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Student.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

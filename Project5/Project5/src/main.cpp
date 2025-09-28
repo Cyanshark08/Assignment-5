@@ -7,9 +7,10 @@
 * 
 * Date: 9/15/2025
 * 
-* Description: Chapter 3 Assignment (Containers)
-* In this project, we utilized containers to create
-* Various games—i.e., TicTacToe, Tower Of Hanoi, & N-Queens.
+* Description: Chapter 5 Assignment (Linked Lists)
+* In this project, we demonstrated and exemplified the
+* Usages of Linked Lists (Singly, Doubly, & Circular) 
+* and Dynamic Arrays (Vectors).
 * 
 */
 

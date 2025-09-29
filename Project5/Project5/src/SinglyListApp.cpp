@@ -74,7 +74,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'B': // push an element to the back
-		// empty list
+		// if empty list, push to the front of the list
 		if (m_List.empty())
 			m_List.push_front(this->getStudent());
 		else
@@ -92,6 +92,7 @@ void SinglyListApp::HandleInput(char p_Input)
 
 	case 'C': // insert_after
 	{
+		// check if empty list
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR Cannot insert after an element on an empty list.";
@@ -114,6 +115,7 @@ void SinglyListApp::HandleInput(char p_Input)
 	}
 
 	case 'D': // pop_front
+		// check if empty list
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot pop on an empty list.";
@@ -125,6 +127,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'E': // pop an element at the back
+		// check if empty list
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot pop from an empty list.";
@@ -153,8 +156,10 @@ void SinglyListApp::HandleInput(char p_Input)
 			std::cout << "\n\t\tERROR: Cannot remove from an empty list.";
 			break;
 		}
+
 		size_t sizeBefore = numOfNodes;
 
+		// get the details of the student to remove
 		std::cout << "\n\t\tEnter the details of the element to remove:";
 		Student temp = this->getStudent();
 
@@ -162,8 +167,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		m_List.remove(temp);
 
 		// recalculate the number of nodes
-		numOfNodes = distance(m_List.begin(), m_List.end());
-
+		numOfNodes = std::distance(m_List.begin(), m_List.end());
 		size_t removedElements = sizeBefore - numOfNodes;
 		if (removedElements != 0)
 			std::cout << "\n\t\tSuccessfully removed " << removedElements << " elements from the list.";
@@ -172,10 +176,25 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 	}
 
-	case 'G': // remove_if
+	case 'G': // remove_if()
 	{
-		// display submenu
+		size_t sizeBefore = numOfNodes;
+		// get the name of the student to remove
+		std::string name = Input::inputString("\n\t\tEnter the name of the student to remove: ", true);
+		
+		// remove any student with the same name
+		m_List.remove_if([&](Student temp) 
+		{
+			return name == temp.getName(); 
+		});
 
+		// recalculate the number of nodes
+		numOfNodes = std::distance(m_List.begin(), m_List.end());
+		size_t removedElements = sizeBefore - numOfNodes;
+		if (numOfNodes != 0)
+			std::cout << "\n\t\tSuccessfully removed " << removedElements << " elements from the list.";
+		else
+			std::cout << "\n\t\tNo elements were found and removed.";
 		break;
 	}
 
@@ -194,7 +213,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		m_List.erase_after(it);
 
 		// recalculate the number of nodes
-		numOfNodes = distance(m_List.begin(), m_List.end());
+		numOfNodes = std::distance(m_List.begin(), m_List.end());
 
 		size_t removedElements = sizeBefore - numOfNodes;
 		if (removedElements != 0)
@@ -270,7 +289,7 @@ void SinglyListApp::HandleInput(char p_Input)
 
 		// display the elements by traversing using begin() and end()
 		std::cout << "\n\t\tUsing begin() and end(), the list contains: ";
-		for (auto it = m_List.begin(); it != m_List.end(); it++)
+		for (it; it != m_List.end(); it++)
 			std::cout << "\n\t\t\t" << &it << " " << *it;
 		break;
 
@@ -280,7 +299,7 @@ void SinglyListApp::HandleInput(char p_Input)
 
 		// display the sorted list
 		std::cout << "\n\t\tSorted List: ";
-		for (auto it = m_List.begin(); it != m_List.end(); it++)
+		for (; it != m_List.end(); it++)
 			std::cout << "\n\t\t\t" << &it << " " << *it;
 		break;
 		
@@ -290,7 +309,7 @@ void SinglyListApp::HandleInput(char p_Input)
 
 		// display the reversed list
 		std::cout << "\n\t\tReversed List: ";
-		for (auto it = m_List.begin(); it != m_List.end(); it++)
+		for (it; it != m_List.end(); it++)
 			std::cout << "\n\t\t\t" << &it << " " << *it;
 		break;
 
@@ -302,7 +321,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		m_List.resize(size, Student());
 
 		// recalculate the number of nodes in the list.
-		numOfNodes = distance(m_List.begin(), m_List.end());
+		numOfNodes = std::distance(m_List.begin(), m_List.end());
 		std::cout << "\n\t\tSuccessfully resized the array to have " << size << " elements.";
 		break;
 
@@ -312,6 +331,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 		
 	case 'S': // read file and push_back()
+
 		break;
 
 	case '0':

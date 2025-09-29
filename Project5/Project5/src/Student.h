@@ -37,6 +37,11 @@ public:
 		GPA = newGPA;
 	}
 
+	string getName() const
+	{
+		return name;
+	}
+
 	//overloading operator <<
 	friend ostream& operator <<(ostream& outs, const Student& obj)
 	{

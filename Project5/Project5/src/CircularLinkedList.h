@@ -3,6 +3,15 @@
 #include "ExceptionInterface.h"
 
 /*
+* 
+* This class is a doubly-circularly-linked list that
+* links forward, backward, and loops back around.
+* 
+* It implements both 
+* 
+*/
+
+/*
 * TODO:
 *  - Finish Class Implementation
 * 
@@ -28,9 +37,13 @@ public:
 		Node*& GetNext();
 		bool HasNext() const;
 
+		Node*& GetPrevious();
+		bool HasPrevious() const;
+
 	private:
 		value_type m_Data;
 		Node* m_Next = nullptr;
+		Node* m_Prev = nullptr;
 	};
 
 	class ListIter
@@ -58,12 +71,37 @@ public:
 
 	typedef ListIter iterator;
 
+	class ListReverseIter
+	{
+	public:
+		ListReverseIter(CircularLinkedList& p_CircularLinkedList, Node* p_CurrentNode, size_t p_Increment);
+
+		ListReverseIter& operator++();
+		ListReverseIter operator++(int);
+
+		//ContainerIterator& operator--();
+		//ContainerIterator operator--(int);
+
+		bool operator!=(const ListReverseIter& p_Other) const;
+
+		value_type& operator*();
+
+		ListReverseIter& operator=(const ListReverseIter& p_Other);
+
+	private:
+		Node* m_CurrentNode{ nullptr };
+		CircularLinkedList& m_CircularLinkedList;
+		size_t m_Increment;
+	};
+
+	typedef ListReverseIter reverse_iterator;
+
 public:
 	CircularLinkedList() = default;
 
 	~CircularLinkedList();
 
-	void Clear() const;
+	void Clear();
 
 	void Resize(size_t p_NewSize);
 
@@ -88,6 +126,10 @@ public:
 	iterator begin();
 
 	iterator end();
+
+	reverse_iterator rbegin();
+
+	reverse_iterator rend();
 
 	value_type& operator [](size_t p_Index);
 

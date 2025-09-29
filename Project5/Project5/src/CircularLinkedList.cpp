@@ -71,13 +71,15 @@ void CircularLinkedList::PushBack(const value_type& p_NewElement)
 
 	Node* oldTail = m_TailPtr;
 
-
 	m_TailPtr = new Node();
 	m_TailPtr->GetData() = p_NewElement;
 
 	oldTail->GetNext() = m_TailPtr;
+	m_TailPtr->GetPrevious() = oldTail;
 
 	m_TailPtr->GetNext() = m_HeadPtr;
+	m_HeadPtr->GetPrevious() = m_TailPtr;
+
 	m_NumOfElements++;
 }
 
@@ -88,10 +90,17 @@ size_t CircularLinkedList::GetSize() const
 
 void CircularLinkedList::Insert(size_t p_Index) const
 {
+	if (p_Index >= m_NumOfElements)
+		throw E_IndexOutOfBounds(p_Index, m_NumOfElements);
+
+
 }
 
 void CircularLinkedList::DeleteAt(size_t p_Index) const
 {
+	if (p_Index >= m_NumOfElements)
+		throw E_IndexOutOfBounds(p_Index, m_NumOfElements);
+
 }
 
 CircularLinkedList::iterator CircularLinkedList::begin()
@@ -184,12 +193,11 @@ void CircularLinkedList::PushFront(const value_type& p_NewElement)
 	m_HeadPtr->GetData() = p_NewElement;
 
 	m_HeadPtr->GetNext() = oldHead;
-
 	oldHead->GetPrevious() = m_HeadPtr;
 
 	m_TailPtr->GetNext() = m_HeadPtr;
-
 	m_HeadPtr->GetPrevious() = m_TailPtr;
+
 	m_NumOfElements++;
 }
 
@@ -272,7 +280,7 @@ CircularLinkedList::ListReverseIter& CircularLinkedList::ListReverseIter::operat
 		return *this;
 	}
 
-	m_CurrentNode = m_CurrentNode->GetNext();
+	m_CurrentNode = m_CurrentNode->GetPrevious();
 	m_Increment++;
 
 	return *this;
@@ -288,7 +296,7 @@ CircularLinkedList::ListReverseIter CircularLinkedList::ListReverseIter::operato
 		return *this;
 	}
 
-	m_CurrentNode = m_CurrentNode->GetNext();
+	m_CurrentNode = m_CurrentNode->GetPrevious();
 	m_Increment++;
 
 	return temp;

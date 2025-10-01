@@ -27,7 +27,7 @@ void SinglyListApp::Run()
 		std::cout << "\n\t\tD. pop_front() - pops an element from the beginning of the list";
 		std::cout << "\n\t\tE. Pop an element from the end of the list";
 		std::cout << "\n\t\tF. remove(value) - removes all elements with the same value";
-		std::cout << "\n\t\tG. remove_if(condition) - removes all elements that have the same name";
+		std::cout << "\n\t\tG. remove_if(condition) - removes all elements based on a condition";
 		std::cout << "\n\t\tH. erase_after(pos) - erases (deletes) the element after the given position";
 		std::cout << "\n\t\tI. Change an existing node with new student information";
 		std::cout << "\n\t\tJ. front() - returns a reference to the element at the front of the list";
@@ -198,10 +198,11 @@ void SinglyListApp::HandleInput(char p_Input)
 			std::cout << "\n\t\tA. Remove by name";
 			std::cout << "\n\t\tB. Remove by grade level";
 			std::cout << "\n\t\tC. Remove students below a certain GPA";
+			std::cout << "\n\t\tD. Display all students";
 			std::cout << "\n\t" << std::string(110, 196);
 			std::cout << "\n\t\t0. Return";
 			std::cout << "\n\t" << std::string(110, 205);
-			switch (Input::inputChar("\n\t\tOption: ", "ABC0"))
+			switch (Input::inputChar("\n\t\tOption: ", "ABCD0"))
 			{
 			case 'A': // remove by name
 			{
@@ -241,14 +242,14 @@ void SinglyListApp::HandleInput(char p_Input)
 					});
 				break;
 			}
+
 			case 'D': // display all students
-			{
 				// display the elements by traversing using begin() and end()
-					std::cout << "\n\t\tUsing begin() and end(), the list contains: ";
+				std::cout << "\n\t\tUsing begin() and end(), the list contains: ";
 				for (auto it = m_List.begin(); it != m_List.end(); it++)
 					std::cout << "\n\t\t\t" << &(*it) << " (" << *it << ")";
 				break;
-			}
+
 			case '0': return;
 			}
 
@@ -263,11 +264,6 @@ void SinglyListApp::HandleInput(char p_Input)
 			std::cout << "\n";
 			std::system("pause");
 		} while (true);
-
-
-
-
-		
 		break;
 	}
 
@@ -387,7 +383,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		// display the sorted list
 		std::cout << "\n\t\tSorted List: ";
 		for (auto it = m_List.begin(); it != m_List.end(); it++)
-			std::cout << "\n\t\t\t" << &(*it) << " " << *it;
+			std::cout << "\n\t\t\t" << &(*it) << " (" << *it << ")";
 		break;
 		
 	case 'O': // reverse()
@@ -404,7 +400,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		// display the reversed list
 		std::cout << "\n\t\tReversed List: ";
 		for (auto it = m_List.begin(); it != m_List.end(); it++)
-			std::cout << "\n\t\t\t" << &(*it) << " " << *it;
+			std::cout << "\n\t\t\t" << &(*it) << " (" << *it << ")";
 		break;
 
 	case 'P': // resize()
@@ -417,7 +413,7 @@ void SinglyListApp::HandleInput(char p_Input)
 
 		// recalculate the number of nodes in the list.
 		numOfNodes = std::distance(m_List.begin(), m_List.end());
-		std::cout << "\n\t\tSuccessfully resized the array to have " << size << " elements.";
+		std::cout << "\n\t\tSuccessfully resized the list to have " << size << " default elements.";
 		break;
 	}
 
@@ -430,7 +426,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case '0':
-		m_MenuState = MenuState::Exited;
+		this->Restart();
 		return;
 
 	}

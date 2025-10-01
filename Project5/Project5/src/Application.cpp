@@ -92,6 +92,7 @@ void Application::Clean()
 
 void Application::DisplayMainMenu()
 {
+    std::system("cls");
     puts("\n\tCMPR131 Chapter 5: Vector and List Container by Your Name (Current Date)");
     puts(std::string(110, 205).c_str());
     puts("\t1 > Vector Container");

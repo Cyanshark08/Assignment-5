@@ -298,7 +298,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		// display the elements by traversing using begin() and end()
 		std::cout << "\n\t\tUsing begin() and end(), the list contains: ";
 		for (auto it = m_List.begin(); it != m_List.end(); it++)
-			std::cout << "\n\t\t\t" << &(*it) << " " << *it;
+			std::cout << "\n\t\t\t" << &(*it) << " (" << *it << ")";
 		break;
 	}
 
@@ -337,7 +337,7 @@ void SinglyListApp::HandleInput(char p_Input)
 	}
 
 	case 'Q': // clear
-		this->Clean();
+		m_List.clear();
 		std::cout << "\n\t\tSuccessfully cleared the list of elements.";
 		break;
 		
@@ -355,18 +355,17 @@ void SinglyListApp::HandleInput(char p_Input)
 
 Student SinglyListApp::getStudent() const
 {
-	char name[51] = "na";
-	char level[2] = "0";
-
 	// get student info
-	strncpy_s(name, (Input::inputString("\n\t\tEnter a new student name: ", true)).c_str(), 51);
-	strncpy_s(level, (Input::inputString("\t\tEnter their grade level (1-Freshman, 2-Sophmore, 3-Junior, or 4-Senior): ", "1234")).c_str(), 2);
-	float gpa = Input::inputDouble("\t\tEnter their gpa (0.0...4.0): ", 0.0, 4.0);
+	std::string name = Input::inputString("\n\t\tEnter a new student name: ", true);
+	int level = Input::inputInteger("\t\tEnter their grade level (1-Freshman, 2-Sophmore, 3-Junior, or 4-Senior): ", 1, 4);
+	double gpa = Input::inputDouble("\t\tEnter their gpa (0.0...4.0): ", 0.0, 4.0);
 
 	// set the student
+	std::string levels[4] = { "Freshmen", "Sophmore", "Junior", "Senior" };
+
 	Student temp;
 	temp.setName(name);
-	temp.setGradeLevel(level);
+	temp.setGradeLevel(levels[level - 1]);
 	temp.setGPA(gpa);
 
 	return temp;

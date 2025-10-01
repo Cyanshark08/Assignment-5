@@ -1,5 +1,6 @@
 #pragma once
 #include "SubApp.h"
+#include "Student.h"
 #include <vector>
 #include <list>
 #include <iostream>
@@ -46,9 +47,10 @@ private:
     void insertElement();
     void swapVectors();
     void sortVector();
+    Student getStudent() const;
 
 private:
     MenuState m_MenuState;
-    std::vector<int> m_IntVector;
+    std::vector<Student> m_Vector;
     std::list<int> m_DemoList; // For demonstration purposes
 };

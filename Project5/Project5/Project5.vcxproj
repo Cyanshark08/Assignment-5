@@ -131,6 +131,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SinglyListApp.cpp" />
     <ClCompile Include="src\SubApp.cpp" />
+    <ClCompile Include="src\VectorContainerApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CircularListApp.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="src\SinglyListApp.h" />
     <ClInclude Include="src\Student.h" />
     <ClInclude Include="src\SubApp.h" />
+    <ClInclude Include="src\VectorContainerApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

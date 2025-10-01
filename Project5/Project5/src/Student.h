@@ -36,6 +36,16 @@ public:
 		return name;
 	}
 
+	std::string getLevel() const
+	{
+		return gradeLevel;
+	}
+
+	double getGPA() const
+	{
+		return GPA;
+	}
+
 	//overloading operator <<
 	friend std::ostream& operator <<(std::ostream& outs, const Student& obj)
 	{

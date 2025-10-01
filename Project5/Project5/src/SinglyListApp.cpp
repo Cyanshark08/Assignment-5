@@ -27,8 +27,8 @@ void SinglyListApp::Run()
 		std::cout << "\n\t\tD. pop_front() - pops an element from the beginning of the list";
 		std::cout << "\n\t\tE. Pop an element from the end of the list";
 		std::cout << "\n\t\tF. remove(value) - removes all elements with the same value";
-		std::cout << "\n\t\tG. remove_if(cond) - removes all elements that meet the condition";
-		std::cout << "\n\t\tH. erase_after(pos) - erases (deletes) all the elements after the given position (not including current node)";
+		std::cout << "\n\t\tG. remove_if(condition) - removes all elements that have the same name";
+		std::cout << "\n\t\tH. erase_after(pos) - erases (deletes) the element after the given position";
 		std::cout << "\n\t\tI. Change an existing node with new student information";
 		std::cout << "\n\t\tJ. front() - returns a reference to the element at the front of the list";
 		std::cout << "\n\t\tK. begin() - returns an iterator to the element at the front of the list";
@@ -181,23 +181,93 @@ void SinglyListApp::HandleInput(char p_Input)
 
 	case 'G': // remove_if()
 	{
-		size_t sizeBefore = numOfNodes;
-		// get the name of the student to remove
-		std::string name = Input::inputString("\n\t\tEnter the name of the student to remove: ", true);
-		
-		// remove any student with the same name
-		m_List.remove_if([&](Student temp) 
+		// check if empty list
+		if (m_List.empty())
 		{
-			return name == temp.Student::getName(); 
-		});
+			std::cout << "\n\t\tERROR: Cannot remove from an empty list.";
+			break;
+		}
 
-		// recalculate the number of nodes
-		numOfNodes = std::distance(m_List.begin(), m_List.end());
-		size_t removedElements = sizeBefore - numOfNodes;
-		if (removedElements != 0)
-			std::cout << "\n\t\tSuccessfully removed " << removedElements << " elements from the list.";
-		else
-			std::cout << "\n\t\tNo elements were found and removed.";
+		do
+		{
+			size_t sizeBefore = numOfNodes;
+			std::system("cls");
+			// display the submenu
+			std::cout << "\n\tG. Remove_if(condition) Submenu";
+			std::cout << "\n\t" << std::string(110, 205);
+			std::cout << "\n\t\tA. Remove by name";
+			std::cout << "\n\t\tB. Remove by grade level";
+			std::cout << "\n\t\tC. Remove students below a certain GPA";
+			std::cout << "\n\t" << std::string(110, 196);
+			std::cout << "\n\t\t0. Return";
+			std::cout << "\n\t" << std::string(110, 205);
+			switch (Input::inputChar("\n\t\tOption: ", "ABC0"))
+			{
+			case 'A': // remove by name
+			{
+				// get the name of the student to remove
+				std::string name = Input::inputString("\n\t\tEnter the name of the student to remove: ", true);
+
+				// remove any student with the same name
+				m_List.remove_if([&](Student temp)
+					{
+						return name == temp.Student::getName();
+					});
+				break;
+			}
+
+			case 'B': // remove by grade level
+			{
+				// get the grade level of students to remove
+				std::string levels[4] = { "Freshmen", "Sophmore", "Junior", "Senior" };
+				int level = Input::inputInteger("\n\tEnter the grade level of the students to remove: ", 1, 4);
+
+				// remove the students with the same grade level
+				m_List.remove_if([&](Student temp)
+					{
+						return levels[level - 1] == temp.Student::getLevel();
+					});
+				break;
+			}
+
+			case 'C': // remove by GPA
+			{
+				// get the gpa
+				double gpaThreshold = Input::inputDouble("\n\tEnter the GPA threshold to remove students below: ", 0.0, 4.0);
+				// remove the students with the same grade level
+				m_List.remove_if([&](Student temp)
+					{
+						return gpaThreshold > temp.Student::getGPA();
+					});
+				break;
+			}
+			case 'D': // display all students
+			{
+				// display the elements by traversing using begin() and end()
+					std::cout << "\n\t\tUsing begin() and end(), the list contains: ";
+				for (auto it = m_List.begin(); it != m_List.end(); it++)
+					std::cout << "\n\t\t\t" << &(*it) << " (" << *it << ")";
+				break;
+			}
+			case '0': return;
+			}
+
+			// recalculate the number of nodes
+			numOfNodes = std::distance(m_List.begin(), m_List.end());
+			size_t removedElements = sizeBefore - numOfNodes;
+			if (removedElements != 0)
+				std::cout << "\n\t\tSuccessfully removed " << removedElements << " elements from the list.";
+			else
+				std::cout << "\n\t\tNo elements were found and removed.";
+
+			std::cout << "\n";
+			std::system("pause");
+		} while (true);
+
+
+
+
+		
 		break;
 	}
 
@@ -211,7 +281,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		}
 
 		size_t sizeBefore = numOfNodes;
-		size_t pos = Input::inputInteger("\n\t\tEnter the node (position) to delete elements after: ", 0, numOfNodes - 1);
+		size_t pos = Input::inputInteger("\n\t\tEnter the node (position) to delete the element after: ", 0, numOfNodes - 1);
 
 		// erase the students after the position
 		auto it = m_List.begin();
@@ -267,7 +337,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'K': // begin()
-		std::cout << "\n\t\tIterator to the first element: " << &m_List.front() << " " << m_List.front();
+		std::cout << "\n\t\tIterator to the first element: " << &m_List.front() << " (" << m_List.front() << ")";
 		break;
 
 	case 'L': // reference to the last element of the list
@@ -282,7 +352,8 @@ void SinglyListApp::HandleInput(char p_Input)
 		auto it = m_List.begin();
 		advance(it, numOfNodes - 1);
 
-		std::cout << "\n\t\tLast element from the list: " << *it;
+		std::cout << "\n\t\tLast element from the list: " << &(*it) << " (" << *it << ")";
+		std::cout << "\n";
 		break;
 	}
 
@@ -306,6 +377,13 @@ void SinglyListApp::HandleInput(char p_Input)
 		// sort the list
 		m_List.sort();
 
+		// check if empty list
+		if (m_List.empty())
+		{
+			std::cout << "\n\t\tSorted the empty list.";
+			break;
+		}
+
 		// display the sorted list
 		std::cout << "\n\t\tSorted List: ";
 		for (auto it = m_List.begin(); it != m_List.end(); it++)
@@ -315,6 +393,13 @@ void SinglyListApp::HandleInput(char p_Input)
 	case 'O': // reverse()
 		// reverse the list
 		m_List.reverse();
+
+		// check if empty list
+		if (m_List.empty())
+		{
+			std::cout << "\n\t\tReveresed the empty list.";
+			break;
+		}
 
 		// display the reversed list
 		std::cout << "\n\t\tReversed List: ";

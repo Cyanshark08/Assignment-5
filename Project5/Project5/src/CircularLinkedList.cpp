@@ -88,19 +88,59 @@ size_t CircularLinkedList::GetSize() const
 	return m_NumOfElements;
 }
 
-void CircularLinkedList::Insert(size_t p_Index) const
+void CircularLinkedList::Insert(value_type p_NewElement, size_t p_Index)
 {
 	if (p_Index >= m_NumOfElements)
 		throw E_IndexOutOfBounds(p_Index, m_NumOfElements);
 
+	size_t increment = p_Index;
+	Node* ptr = m_HeadPtr;
+	Node* cachedNextPtr = nullptr;
 
+	while (increment > 0 && ptr->HasNext())
+	{
+		increment--;
+		ptr = ptr->GetNext();
+	}
+
+	cachedNextPtr = ptr->GetNext();
+
+	ptr->GetNext() = new Node();
+	ptr->GetNext()->GetData() = p_NewElement;
+
+	ptr->GetNext()->GetNext() = cachedNextPtr;
+	ptr->GetNext()->GetPrevious() = ptr;
 }
 
-void CircularLinkedList::DeleteAt(size_t p_Index) const
+void CircularLinkedList::DeleteAt(size_t p_Index)
 {
+	if (m_NumOfElements == 0)
+		throw E_NullList();
+
 	if (p_Index >= m_NumOfElements)
 		throw E_IndexOutOfBounds(p_Index, m_NumOfElements);
 
+	size_t increment = p_Index;
+	Node* ptr = m_HeadPtr;
+	Node* cachedNextPtr = nullptr;
+
+	while (increment > 0 && ptr->HasNext())
+	{
+		increment--;
+		ptr = ptr->GetNext();
+	}
+
+	if (!ptr->GetNext()->HasNext())
+	{
+		delete ptr->GetNext();
+		return;
+	}
+
+	cachedNextPtr = ptr->GetNext()->GetNext();
+	delete ptr->GetNext();
+
+	ptr->GetNext() = cachedNextPtr;
+	ptr->GetNext()->GetPrevious() = ptr;
 }
 
 CircularLinkedList::iterator CircularLinkedList::begin()

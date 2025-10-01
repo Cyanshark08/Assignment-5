@@ -30,7 +30,7 @@ private:
 
 private:
 	MenuState m_MenuState;
-	forward_list<Student> m_List;
+	std::forward_list<Student> m_List;
 	int numOfNodes;
 };
 

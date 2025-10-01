@@ -119,9 +119,9 @@ public:
 
 	size_t GetSize() const;
 	
-	void Insert(size_t p_Index) const;
+	void Insert(value_type p_NewElement,  size_t p_Index);
 
-	void DeleteAt(size_t p_Index) const;
+	void DeleteAt(size_t p_Index);
 
 	iterator begin();
 
@@ -165,3 +165,6 @@ private:
 	size_t m_NumOfElements{ 0 };
 
 };
+
+
+typedef CircularLinkedList circular_list;

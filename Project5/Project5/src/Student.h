@@ -1,15 +1,9 @@
 #pragma once
 
 #include <iostream>
-using namespace std;
 
 class Student
 {
-private:
-	string name;
-	string gradeLevel;
-	double GPA;
-
 public:
 	//default constructor
 	Student() : name("unknown"), gradeLevel("unknown"), GPA(0.0)
@@ -20,13 +14,13 @@ public:
 	{}
 
 	//mutator 
-	void setName(string newName)
+	void setName(const std::string& newName)
 	{
 		name = newName;
 	}
 
 	//mutator 
-	void setGradeLevel(string newGradeLevel)
+	void setGradeLevel(const std::string& newGradeLevel)
 	{
 		gradeLevel = newGradeLevel;
 	}
@@ -38,7 +32,7 @@ public:
 	}
 
 	//overloading operator <<
-	friend ostream& operator <<(ostream& outs, const Student& obj)
+	friend std::ostream& operator <<(std::ostream& outs, const Student& obj)
 	{
 		outs << obj.name << ", " << obj.gradeLevel << ", " << obj.GPA;
 		return outs;
@@ -62,4 +56,8 @@ public:
 			return false;
 	}
 
+private:
+	std::string name;
+	std::string gradeLevel;
+	double GPA;
 };

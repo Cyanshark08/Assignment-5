@@ -1,3 +1,5 @@
+#include "CircularLinkedList.h"
+
 /*
 * 
 * Collaborators:
@@ -18,6 +20,18 @@
 
 int main()
 {
+	circular_list list;
+
+	list.PushBack(12);
+	list.PushBack(13);
+	list.PushBack(14);
+	list.PushBack(15);
+
+	for (const auto& ele : list)
+	{
+
+	}
+
 	Application app;
 
 	app.Run();

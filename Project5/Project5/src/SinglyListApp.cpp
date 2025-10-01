@@ -187,7 +187,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		// remove any student with the same name
 		m_List.remove_if([&](Student temp) 
 		{
-			return name == temp.getName(); 
+			return name == temp.Student::getName(); 
 		});
 
 		// recalculate the number of nodes

@@ -32,25 +32,25 @@ void SinglyListApp::Run()
 		std::cout << "\n\t\tJ. front() - returns a reference to the element at the front of the list";
 		std::cout << "\n\t\tK. begin() - returns an iterator to the element at the front of the list";
 		std::cout << "\n\t\tL. Return a reference to the element at the end of the list";
-		std::cout << "\n\t\tM. end() - returns an iterator to the element at the end of the list";
-		std::cout << "\n\t\tN. Display all elements using being() and end()";
-		std::cout << "\n\t\tO. sort() - sorts the list";
-		std::cout << "\n\t\tP. reverse() - reverses the list";
-		std::cout << "\n\t\tQ. resize(n) - resizes the list to contain n elements";
-		std::cout << "\n\t\tR. clear() - clears the list";
+		std::cout << "\n\t\tM. Display all elements using being() and end()";
+		std::cout << "\n\t\tN. sort() - sorts the list";
+		std::cout << "\n\t\tO. reverse() - reverses the list";
+		std::cout << "\n\t\tP. resize(n) - resizes the list to contain n elements";
+		std::cout << "\n\t\tQ. clear() - clears the list";
 		std::cout << "\n\t" << std::string(110, 196);
-		std::cout << "\n\t\tS. Read data file and push_back()";
+		std::cout << "\n\t\tR. Read data file and push_back()";
 		std::cout << "\n\t" << std::string(110, 196);
-		std::cout << "\n\t\t" << "0. Return";
+		std::cout << "\n\t\t0. Return";
 		std::cout << "\n\t" << std::string(110, 205);
 
-		HandleInput(Input::inputChar("\n\t\tOption: ", "ABCDEFGHIJKLMNOPQRSTU0"));
+		HandleInput(Input::inputChar("\n\t\tOption: ", "ABCDEFGHIJKLMNOPQR0"));
 	}
 }
 
 void SinglyListApp::Clean()
 {
 	m_List.clear();
+	numOfNodes = 0;
 	m_MenuState = MenuState::Exited;
 }
 
@@ -61,8 +61,6 @@ void SinglyListApp::Restart()
 
 void SinglyListApp::HandleInput(char p_Input)
 {
-	auto it = m_List.begin();
-
 	switch (p_Input)
 	{
 	case 'A': // push_front
@@ -74,12 +72,13 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'B': // push an element to the back
-		// empty list
+		// if empty list, push to the front of the list
 		if (m_List.empty())
 			m_List.push_front(this->getStudent());
 		else
 		{
 			// move the iterator to the last node
+			auto it = m_List.begin();
 			advance(it, numOfNodes - 1);
 
 			// insert the element
@@ -92,6 +91,7 @@ void SinglyListApp::HandleInput(char p_Input)
 
 	case 'C': // insert_after
 	{
+		// check if empty list
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR Cannot insert after an element on an empty list.";
@@ -103,6 +103,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		size_t pos = Input::inputInteger("\n\t\tEnter the node (position) to insert the element after: ", 0, numOfNodes - 1);
 
 		// move the iterator to the node
+		auto it = m_List.begin();
 		advance(it, pos);
 
 		// insert the element
@@ -114,6 +115,7 @@ void SinglyListApp::HandleInput(char p_Input)
 	}
 
 	case 'D': // pop_front
+		// check if empty list
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot pop on an empty list.";
@@ -125,6 +127,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'E': // pop an element at the back
+		// check if empty list
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot pop from an empty list.";
@@ -137,6 +140,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		else
 		{
 			// move iterator to the 2nd to last node
+			auto it = m_List.begin();
 			advance(it, numOfNodes - 2);
 
 			// pop (erase) the last element
@@ -148,13 +152,16 @@ void SinglyListApp::HandleInput(char p_Input)
 
 	case 'F': // remove
 	{
+		// check if list is empty
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot remove from an empty list.";
 			break;
 		}
+
 		size_t sizeBefore = numOfNodes;
 
+		// get the details of the student to remove
 		std::cout << "\n\t\tEnter the details of the element to remove:";
 		Student temp = this->getStudent();
 
@@ -162,8 +169,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		m_List.remove(temp);
 
 		// recalculate the number of nodes
-		numOfNodes = distance(m_List.begin(), m_List.end());
-
+		numOfNodes = std::distance(m_List.begin(), m_List.end());
 		size_t removedElements = sizeBefore - numOfNodes;
 		if (removedElements != 0)
 			std::cout << "\n\t\tSuccessfully removed " << removedElements << " elements from the list.";
@@ -172,14 +178,31 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 	}
 
-	case 'G': // remove_if
+	case 'G': // remove_if()
 	{
-		// display submenu
+		size_t sizeBefore = numOfNodes;
+		// get the name of the student to remove
+		std::string name = Input::inputString("\n\t\tEnter the name of the student to remove: ", true);
+		
+		// remove any student with the same name
+		m_List.remove_if([&](Student temp) 
+		{
+			return name == temp.getName(); 
+		});
 
+		// recalculate the number of nodes
+		numOfNodes = std::distance(m_List.begin(), m_List.end());
+		size_t removedElements = sizeBefore - numOfNodes;
+		if (removedElements != 0)
+			std::cout << "\n\t\tSuccessfully removed " << removedElements << " elements from the list.";
+		else
+			std::cout << "\n\t\tNo elements were found and removed.";
 		break;
 	}
 
 	case 'H': // erase_after
+	{
+		// check if list is empty
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot erase from an empty list.";
@@ -189,12 +212,13 @@ void SinglyListApp::HandleInput(char p_Input)
 		size_t sizeBefore = numOfNodes;
 		size_t pos = Input::inputInteger("\n\t\tEnter the node (position) to delete elements after: ", 0, numOfNodes - 1);
 
-		// erase the students
+		// erase the students after the position
+		auto it = m_List.begin();
 		advance(it, pos);
 		m_List.erase_after(it);
 
 		// recalculate the number of nodes
-		numOfNodes = distance(m_List.begin(), m_List.end());
+		numOfNodes = std::distance(m_List.begin(), m_List.end());
 
 		size_t removedElements = sizeBefore - numOfNodes;
 		if (removedElements != 0)
@@ -202,6 +226,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		else
 			std::cout << "\n\t\tNo instances of the element were found and removed.";
 		break;
+	}
 
 	case 'I': // change an existing node with new information
 	{
@@ -209,6 +234,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		size_t pos = Input::inputInteger("\n\t\tEnter the node (position) of the element to change: ", 0, numOfNodes - 1);
 
 		// advance the iterator to the position
+		auto it = m_List.begin();
 		advance(it, pos);
 		std::cout << "\n\tCurrent Student Information: " << *it;
 
@@ -240,10 +266,11 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'K': // begin()
-		std::cout << "\n\t\tIterator to the first element: " << &m_List.begin() << " " << m_List.front();
+		std::cout << "\n\t\tIterator to the first element: " << &m_List.front() << " " << m_List.front();
 		break;
 
 	case 'L': // reference to the last element of the list
+	{
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot retrieve the last element of an empty list.";
@@ -251,16 +278,15 @@ void SinglyListApp::HandleInput(char p_Input)
 		}
 
 		// traverse to the last node of the list
+		auto it = m_List.begin();
 		advance(it, numOfNodes - 1);
 
 		std::cout << "\n\t\tLast element from the list: " << *it;
 		break;
+	}
 
-	case 'M': // end()
-		std::cout << "\n\t\tIterator pointing past the last element: " << &m_List.end();
-		break;
-	
-	case 'N': // display all elements
+	case 'M': // display all elements
+	{
 		// check if empty list
 		if (m_List.empty())
 		{
@@ -271,30 +297,32 @@ void SinglyListApp::HandleInput(char p_Input)
 		// display the elements by traversing using begin() and end()
 		std::cout << "\n\t\tUsing begin() and end(), the list contains: ";
 		for (auto it = m_List.begin(); it != m_List.end(); it++)
-			std::cout << "\n\t\t\t" << &it << " " << *it;
+			std::cout << "\n\t\t\t" << &(*it) << " " << *it;
 		break;
+	}
 
-	case 'O': // sort()
+	case 'N': // sort()
 		// sort the list
 		m_List.sort();
 
 		// display the sorted list
 		std::cout << "\n\t\tSorted List: ";
 		for (auto it = m_List.begin(); it != m_List.end(); it++)
-			std::cout << "\n\t\t\t" << &it << " " << *it;
+			std::cout << "\n\t\t\t" << &(*it) << " " << *it;
 		break;
 		
-	case 'P': // reverse()
+	case 'O': // reverse()
 		// reverse the list
 		m_List.reverse();
 
 		// display the reversed list
 		std::cout << "\n\t\tReversed List: ";
 		for (auto it = m_List.begin(); it != m_List.end(); it++)
-			std::cout << "\n\t\t\t" << &it << " " << *it;
+			std::cout << "\n\t\t\t" << &(*it) << " " << *it;
 		break;
 
-	case 'Q': // resize()
+	case 'P': // resize()
+	{
 		// ask for the new size of the list
 		size_t size = Input::inputInteger("\n\t\tEnter the new size of the list: ", true);
 
@@ -302,25 +330,26 @@ void SinglyListApp::HandleInput(char p_Input)
 		m_List.resize(size, Student());
 
 		// recalculate the number of nodes in the list.
-		numOfNodes = distance(m_List.begin(), m_List.end());
+		numOfNodes = std::distance(m_List.begin(), m_List.end());
 		std::cout << "\n\t\tSuccessfully resized the array to have " << size << " elements.";
 		break;
+	}
 
-	case 'R': // clear
-		m_List.clear();
+	case 'Q': // clear
+		this->Clean();
 		std::cout << "\n\t\tSuccessfully cleared the list of elements.";
 		break;
 		
-	case 'S': // read file and push_back()
+	case 'R': // read file and push_back()
 		break;
 
 	case '0':
 		m_MenuState = MenuState::Exited;
 		return;
 
-		std::cout << "\n";
-		std::system("pause");
 	}
+	std::cout << "\n";
+	std::system("pause");
 }
 
 Student SinglyListApp::getStudent() const

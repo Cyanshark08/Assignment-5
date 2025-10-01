@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c010e740-651b-4ddb-b8a6-d5bbe6ed8536}</ProjectGuid>
-    <RootNamespace>Project5</RootNamespace>
+    <ProjectGuid>{3c598188-2dbe-464b-83ee-c71ea123871d}</ProjectGuid>
+    <RootNamespace>Test</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -93,6 +93,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -119,30 +121,18 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\CircularListApp.cpp" />
-    <ClCompile Include="src\CircularLinkedList.cpp" />
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\ExceptionInterface.cpp" />
-    <ClCompile Include="src\Input.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\SinglyListApp.cpp" />
-    <ClCompile Include="src\SubApp.cpp" />
-    <ClCompile Include="src\VectorContainerApp.cpp" />
+    <ClCompile Include="ListApp.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CircularListApp.h" />
-    <ClInclude Include="src\CircularLinkedList.h" />
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\ExceptionInterface.h" />
-    <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\SinglyListApp.h" />
-    <ClInclude Include="src\Student.h" />
-    <ClInclude Include="src\SubApp.h" />
-    <ClInclude Include="src\VectorContainerApp.h" />
+    <ClInclude Include="ListApp.h" />
+    <ClInclude Include="Student.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

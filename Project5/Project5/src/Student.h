@@ -31,7 +31,7 @@ public:
 		GPA = newGPA;
 	}
 
-	string getName() const
+	std::string getName() const
 	{
 		return name;
 	}

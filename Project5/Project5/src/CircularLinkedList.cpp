@@ -159,6 +159,22 @@ CircularLinkedList::iterator CircularLinkedList::end()
 	return iterator(*this, m_TailPtr, GetSize());
 }
 
+CircularLinkedList::reverse_iterator CircularLinkedList::rbegin()
+{
+	if (!m_TailPtr)
+		return reverse_iterator(*this, nullptr, NULL);
+
+	return reverse_iterator(*this, m_TailPtr, GetSize());
+}
+
+CircularLinkedList::reverse_iterator CircularLinkedList::rend()
+{
+	if (!m_TailPtr)
+		return reverse_iterator(*this, nullptr, NULL);
+
+	return reverse_iterator(*this, m_HeadPtr, 0);
+}
+
 CircularLinkedList::value_type& CircularLinkedList::Node::GetData()
 {
 	return m_Data;

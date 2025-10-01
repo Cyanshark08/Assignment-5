@@ -18,7 +18,8 @@ VectorContainerApp::VectorContainerApp() : SubApp(AppID::VectorContainerApp) {
 }
 
 void VectorContainerApp::Run() {
-    while (m_MenuState != MenuState::Exited) {
+    while (m_MenuState != MenuState::Exited) { 
+
         std::system("cls");
 
         // Display menu

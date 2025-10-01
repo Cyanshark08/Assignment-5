@@ -11,6 +11,7 @@ SinglyListApp::SinglyListApp()
 
 void SinglyListApp::Run()
 {
+
 	while (m_MenuState != MenuState::Exited)
 	{
 		std::system("cls");

@@ -29,7 +29,7 @@ int main()
 
 	for (const auto& ele : list)
 	{
-
+		printf("\n\t%d");
 	}
 
 	Application app;

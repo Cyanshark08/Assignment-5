@@ -82,19 +82,6 @@ private:
     */
     void displayFrequencies() const;
 
-    // Input validation helpers (adapted from partner's code)
-    /*
-    * Precondition: Prompt string is provided
-    * Postcondition: Returns valid student name containing only letters and spaces
-    */
-    std::string getStudentName(const std::string& prompt) const;
-
-    /*
-    * Precondition: Prompt string is provided
-    * Postcondition: Returns valid grade level (freshman/sophomore/junior/senior)
-    */
-    std::string getGradeLevel(const std::string& prompt) const;
-
     /*
     * Precondition: None
     * Postcondition: Returns a Student object with validated user input

@@ -7,8 +7,10 @@
 *  - Andrew Nguyen
 *  - Jaime Gutierrez
 *  - Landon Mendoza
+*  - Daisy Mateo
+*  - Tony Nguyen
 * 
-* Date: 9/15/2025
+* Date: 10/1/2025
 * 
 * Description: Chapter 5 Assignment (Linked Lists)
 * In this project, we demonstrated and exemplified the
@@ -21,6 +23,7 @@
 
 int main()
 {
+
 	Application app;
 
 	app.Run();

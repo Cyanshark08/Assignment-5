@@ -35,13 +35,11 @@ void PartnerIntegrationApp::Run() {
                 m_Handler = std::make_unique<vectorHandler>();
                 m_CurrentContainerType = "VECTOR";
                 m_MenuState = MenuState::Selection;
-                m_Handler->loadFromFile("input.dat");
                 break;
             case '2':
                 m_Handler = std::make_unique<listHandler>();
                 m_CurrentContainerType = "LIST";
                 m_MenuState = MenuState::Selection;
-                m_Handler->loadFromFile("input.dat");
                 break;
             case '0':
                 m_MenuState = MenuState::Exited;
@@ -56,12 +54,13 @@ void PartnerIntegrationApp::Run() {
             std::cout << "\n\t2> Delete a student";
             std::cout << "\n\t3> Display all students";
             std::cout << "\n\t4> Display student frequencies";
+            std::cout << "\n\t5> Read from file";
             std::cout << "\n\t" << std::string(70, 196);
-            std::cout << "\n\t5> Switch container type";
+            std::cout << "\n\t6> Switch container type";
             std::cout << "\n\t0> Return to Main Menu";
             std::cout << "\n\t" << std::string(70, 205);
 
-            char option = Input::inputChar("\n\tOption: ", "123450");
+            char option = Input::inputChar("\n\tOption: ", "1234560");
             HandleInput(option);
         }
     }
@@ -89,6 +88,9 @@ void PartnerIntegrationApp::HandleInput(char p_Input) {
         displayFrequencies();
         break;
     case '5':
+        m_Handler->loadFromFile("input.dat");
+        break;
+    case '6':
         m_MenuState = MenuState::ContainerChoice;
         m_Handler.reset();
         break;
@@ -97,7 +99,7 @@ void PartnerIntegrationApp::HandleInput(char p_Input) {
         break;
     }
 
-    if (p_Input != '0' && p_Input != '5') {
+    if (p_Input != '0' && p_Input != '6') {
         std::cout << "\n";
         std::system("pause");
     }
@@ -148,57 +150,7 @@ void PartnerIntegrationApp::displayFrequencies() const {
     m_Handler->displayFrequencies();
 }
 
-std::string PartnerIntegrationApp::getStudentName(const std::string& prompt) const {
-    /*
-    * Precondition: Prompt string is provided
-    * Postcondition: Returns validated student name
-    */
-    std::string name;
-    bool valid = false;
 
-    while (!valid) {
-        name = Input::inputString(prompt, true);
-        valid = !name.empty();
-
-        for (char c : name) {
-            if (!std::isalpha(c) && !std::isspace(c)) {
-                valid = false;
-                break;
-            }
-        }
-
-        if (!valid) {
-            std::cout << "\tERROR: Name must contain only letters and spaces.\n";
-        }
-    }
-    return name;
-}
-
-std::string PartnerIntegrationApp::getGradeLevel(const std::string& prompt) const {
-    /*
-    * Precondition: Prompt string is provided
-    * Postcondition: Returns validated grade level
-    */
-    std::string grade;
-    bool valid = false;
-
-    while (!valid) {
-        grade = Input::inputString(prompt, true);
-        std::string lowerGrade = grade;
-        std::transform(lowerGrade.begin(), lowerGrade.end(), lowerGrade.begin(), ::tolower);
-
-        if (lowerGrade == "freshman" || lowerGrade == "sophomore" ||
-            lowerGrade == "junior" || lowerGrade == "senior") {
-            valid = true;
-            grade = lowerGrade;
-            grade[0] = std::toupper(grade[0]);
-        }
-        else {
-            std::cout << "\tERROR: Must be 'freshman', 'sophomore', 'junior', or 'senior'.\n";
-        }
-    }
-    return grade;
-}
 
 Student PartnerIntegrationApp::getStudentFromInput() const {
     /*
@@ -207,12 +159,17 @@ Student PartnerIntegrationApp::getStudentFromInput() const {
     */
     Student s;
 
-    std::string name = getStudentName("\tEnter student name: ");
-    std::string grade = getGradeLevel("\tEnter grade level (freshman/sophomore/junior/senior): ");
-    double gpa = Input::inputDouble("\tEnter GPA (0.0-4.0): ", 0.0, 4.0);
+    // get student info
+    std::string name = Input::inputString("\n\t\tEnter a new student name: ", true);
+    int level = Input::inputInteger("\t\tEnter their grade level (1-Freshman, 2-Sophmore, 3-Junior, or 4-Senior): ", 1, 4);
+    double gpa = Input::inputDouble("\t\tEnter their gpa (0.0...4.0): ", 0.0, 4.0);
+
+    // set the student
+    std::string levels[4] = { "Freshmen", "Sophmore", "Junior", "Senior" };
+
 
     s.setName(name);
-    s.setGradeLevel(grade);
+    s.setGradeLevel(levels[level - 1]);
     s.setGPA(gpa);
 
     return s;

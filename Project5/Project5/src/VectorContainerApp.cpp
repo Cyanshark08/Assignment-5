@@ -190,13 +190,11 @@ void VectorContainerApp::iterateVector() {
         return;
     }
 
-    std::cout << "\n\t\tElements using begin() and end(): ";
-    for (auto it = m_Vector.begin(); it != m_Vector.end(); ++it) {
-        std::cout << *it << " ";
+    std::cout << "\n\t\tElements using begin() and end(): \n";
+    int index = 0;
+    for (auto it = m_Vector.begin(); it != m_Vector.end(); ++it, ++index) {
+        std::cout << "\t\t[" << index << "] " << *it << "\n";
     }
-
-    std::cout << "\n\t\tbegin() points to: " << *m_Vector.begin();
-    std::cout << "\n\t\tend() points past the last element";
 }
 
 /*
@@ -209,13 +207,11 @@ void VectorContainerApp::reverseIterateVector() {
         return;
     }
 
-    std::cout << "\n\t\tElements in reverse using rbegin() and rend(): ";
-    for (auto it = m_Vector.rbegin(); it != m_Vector.rend(); ++it) {
-        std::cout << *it << " ";
+    std::cout << "\n\t\tElements in reverse using rbegin() and rend(): \n";
+    int index = m_Vector.size() - 1;
+    for (auto it = m_Vector.rbegin(); it != m_Vector.rend(); ++it, --index) {
+        std::cout << "\t\t[" << index << "] " << *it << "\n";
     }
-
-    std::cout << "\n\t\trbegin() points to: " << *m_Vector.rbegin();
-    std::cout << "\n\t\trend() points before first element";
 }
 
 /*
@@ -318,29 +314,58 @@ void VectorContainerApp::sortVector() {
 }
 
 /*
-* Precondition: input.dat file exists and contains valid integers
-* Postcondition: Elements from file are added to vector using push_back
+* Precondition: input.dat file exists and contains valid student data in format: Name,GradeLevel,GPA
+* Postcondition: Student elements from file are added to vector using push_back
 */
 void VectorContainerApp::readFromFile() {
-    //std::ifstream file("input.dat");
-    //if (!file) {
-    //    std::cout << "\n\t\tERROR: Could not open input.dat file.";
-    //    return;
-    //}
+    std::ifstream file("input.dat");
+    if (!file) {
+        std::cout << "\n\t\tERROR: Could not open input.dat file.";
+        std::cout << "\n\t\tMake sure input.dat is in the same directory as the executable.";
+        return;
+    }
 
-    //int count = 0;
-    //while (file >> value) {
-    //    m_Vector.push_back(value);
-    //    count++;
-    //}
-    //file.close();
+    int count = 0;
+    std::string line;
 
-    //std::cout << "\n\t\tSuccessfully read " << count << " elements from input.dat";
+    while (std::getline(file, line)) {
+        // Parse each line: Name,GradeLevel,GPA
+        size_t firstComma = line.find(',');
+        size_t secondComma = line.find(',', firstComma + 1);
 
-    //// Also demonstrate list operations
-    //m_DemoList.assign(m_Vector.begin(), m_Vector.end());
-    //std::cout << "\n\t\tAlso created a list with the same elements for demonstration.";
-    return;
+        if (firstComma != std::string::npos && secondComma != std::string::npos) {
+            std::string name = line.substr(0, firstComma);
+            std::string gradeLevel = line.substr(firstComma + 1, secondComma - firstComma - 1);
+            std::string gpaStr = line.substr(secondComma + 1);
+
+            try {
+                double gpa = std::stod(gpaStr);
+
+                Student student;
+                student.setName(name);
+                student.setGradeLevel(gradeLevel);
+                student.setGPA(gpa);
+
+                m_Vector.push_back(student);
+                count++;
+            }
+            catch (const std::exception& e) {
+                std::cout << "\n\t\tWarning: Could not parse GPA from line: " << line;
+            }
+        }
+        else {
+            std::cout << "\n\t\tWarning: Invalid format in line: " << line;
+        }
+    }
+
+    file.close();
+
+    if (count > 0) {
+        std::cout << "\n\t\tSuccessfully read " << count << " students from input.dat";
+    }
+    else {
+        std::cout << "\n\t\tNo valid student data found in input.dat";
+    }
 }
 
 void VectorContainerApp::displayVector() const {
@@ -349,12 +374,10 @@ void VectorContainerApp::displayVector() const {
         std::cout << "Empty";
     }
     else {
-        std::cout << "[ ";
+        std::cout << "\n";
         for (size_t i = 0; i < m_Vector.size(); ++i) {
-            std::cout << m_Vector[i];
-            if (i < m_Vector.size() - 1) std::cout << ", ";
+            std::cout << "\t[" << i << "] " << m_Vector[i] << "\n";
         }
-        std::cout << " ]";
     }
     std::cout << "\n\tSize: " << m_Vector.size() << ", Capacity: " << m_Vector.capacity();
 }

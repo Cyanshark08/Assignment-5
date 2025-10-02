@@ -40,13 +40,17 @@ private:
     void popBackVector();
     void frontBackVector();
     void accessElement();
-    void iterateVector();
-    void reverseIterateVector();
-    void eraseElement();
-    void eraseRange();
-    void insertElement();
-    void swapVectors();
-    void sortVector();
+    void beginIterator();        // For option I
+    void endIterator();          // For option J
+    void displayWithIterators(); // For option K
+    void rbeginIterator();       // For option L
+    void rendIterator();         // For option M
+    void displayWithReverseIterators(); // For option N
+    void eraseElement();         // For option O
+    void eraseRange();           // For option P
+    void insertElement();        // For option Q
+    void swapVectors();          // For option R
+    void sortVector();           // For option S
     Student getStudent() const;
 
 private:

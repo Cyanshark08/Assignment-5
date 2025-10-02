@@ -14,13 +14,15 @@ void listHandler::addStudent(const Student& s) {
     students.push_back(s);
 }
 
-void listHandler::deleteStudent(const Student& s) {
-    students.remove(s);  // Uses your operator==
+bool listHandler::deleteStudent(const Student& s) {
+    size_t initialSize = students.size();
+    students.remove(s);
+    return students.size() < initialSize; // Return true if deletion occurred
 }
 
 void listHandler::displayStudents() const {
     for (const auto& s : students) {
-        std::cout << s << std::endl;  // Uses your operator<<
+        std::cout << s << std::endl;
     }
 }
 

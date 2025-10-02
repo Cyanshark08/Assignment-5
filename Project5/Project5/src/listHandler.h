@@ -8,11 +8,11 @@
 
 class listHandler : public containerHandler {
 private:
-    std::list<Student> students;  // Use your Student class
+    std::list<Student> students;
 
 public:
     void addStudent(const Student& s) override;
-    void deleteStudent(const Student& s) override;
+    bool deleteStudent(const Student& s) override;  // Changed to return bool
     void displayStudents() const override;
     void displayFrequencies() const override;
     void loadFromFile(const std::string& filename) override;

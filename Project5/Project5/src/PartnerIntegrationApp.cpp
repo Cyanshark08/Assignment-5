@@ -121,8 +121,15 @@ void PartnerIntegrationApp::deleteStudent() {
     * Postcondition: Student is removed from current container if found
     */
     Student s = getStudentFromInput();
-    m_Handler->deleteStudent(s);
-    std::cout << "\n\tStudent deleted from " << m_CurrentContainerType << " if found.";
+
+    bool deleted = m_Handler->deleteStudent(s);
+
+    if (deleted) {
+        std::cout << "\n\tStudent deleted successfully from " << m_CurrentContainerType << ".";
+    }
+    else {
+        std::cout << "\n\tERROR: Invalid input - student not found in " << m_CurrentContainerType << ".";
+    }
 }
 
 void PartnerIntegrationApp::displayStudents() const {

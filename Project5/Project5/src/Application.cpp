@@ -3,6 +3,7 @@
 #include "SinglyListApp.h"
 #include "DoublyListApp.h"
 #include "PartnerIntegrationApp.h"  // Include the new integrated app
+#include "CircularListApp.h"
 #include <string>
 #include "Input.h"
 
@@ -53,11 +54,8 @@ void Application::Run()
             }
             case AppID::CircularListApp:
             {
-                // CircularListApp circularListApp;
-                // circularListApp.Run();
-                std::cout << "\n\tCircular Linked List App - Not yet implemented";
-                std::cout << "\n";
-                std::system("pause");
+                CircularListApp circularListApp;
+                circularListApp.Run();
                 break;
             }
             case AppID::VectorListExampleApp:

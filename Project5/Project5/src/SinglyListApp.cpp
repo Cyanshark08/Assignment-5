@@ -1,6 +1,8 @@
 #include "SinglyListApp.h"
 #include "Input.h"
 #include <iterator>
+#include <sstream>
+#include <fstream>
 
 
 SinglyListApp::SinglyListApp()
@@ -297,6 +299,13 @@ void SinglyListApp::HandleInput(char p_Input)
 
 	case 'I': // change an existing node with new information
 	{
+		// check if empty list
+		if (m_List.empty())
+		{
+			std::cout << "\n\t\tERROR: Cannot change nodes of an empty list.";
+			break;
+		}
+
 		// ask for the position of th node to change
 		size_t pos = Input::inputInteger("\n\t\tEnter the node (position) of the element to change: ", 0, numOfNodes - 1);
 
@@ -323,6 +332,7 @@ void SinglyListApp::HandleInput(char p_Input)
 	}
 
 	case 'J': // front()
+		// check if empty list
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot retrieve the front of an empty list.";
@@ -333,11 +343,18 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'K': // begin()
+		// check if empty list
+		if (m_List.empty())
+		{
+			std::cout << "\n\t\tERROR: Cannot return iterator to first element from an empty list.";
+			break;
+		}
 		std::cout << "\n\t\tIterator to the first element: " << &m_List.front() << " (" << m_List.front() << ")";
 		break;
 
 	case 'L': // reference to the last element of the list
 	{
+		// check if empty list
 		if (m_List.empty())
 		{
 			std::cout << "\n\t\tERROR: Cannot retrieve the last element of an empty list.";
@@ -385,7 +402,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		for (auto it = m_List.begin(); it != m_List.end(); it++)
 			std::cout << "\n\t\t\t" << &(*it) << " (" << *it << ")";
 		break;
-		
+
 	case 'O': // reverse()
 		// reverse the list
 		m_List.reverse();
@@ -421,14 +438,68 @@ void SinglyListApp::HandleInput(char p_Input)
 		m_List.clear();
 		std::cout << "\n\t\tSuccessfully cleared the list of elements.";
 		break;
-		
-	case 'R': // read file and push_back()
-		break;
 
-	case '0':
+	case 'R': // read file and push_back()
+	{
+		// get the file name
+		std::string fileName = Input::inputString("\n\tEnter the file name: ", false);
+		std::fstream file;
+
+		// open the file to read
+		file.open(fileName, std::ios::in);
+
+		// check if successful open
+		if (!file)
+		{
+			std::cout << "\n\tERROR: Could not open file.";
+			break;
+		}
+		// advance the iterator the the last node
+		auto it = m_List.before_begin();
+		if (!m_List.empty())
+			advance(it, numOfNodes - 1);
+
+		// read the file
+		std::string line;
+		while (std::getline(file, line, '\n'))
+		{
+			std::istringstream tokens(line);
+			std::string name, level, gpa;
+			Student temp;
+
+			// retrieve the data
+			std::getline(tokens, name, ',');
+			std::getline(tokens, level, ',');
+			std::getline(tokens, gpa);
+
+			// set temp
+			temp.setName(name);
+			temp.setGradeLevel(level);
+			temp.setGPA(std::stod(gpa));
+
+			// push to the back of the list
+			if (m_List.empty())
+			{
+				m_List.push_front(temp);
+				it = m_List.begin();
+			}
+			else
+			{
+				m_List.insert_after(it, temp);
+				it++;
+			}
+			numOfNodes++;
+		}
+
+		// close the file
+		file.close();
+		std::cout << "\n\tSuccessfully loaded students from file.";
+		break;
+	}
+
+	case '0': // return
 		this->Restart();
 		return;
-
 	}
 	std::cout << "\n";
 	std::system("pause");

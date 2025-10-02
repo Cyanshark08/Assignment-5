@@ -47,6 +47,9 @@ public:
 		Node* m_Prev = nullptr;
 	};
 
+	/*
+	* Forward Iterator for Circular Linked List
+	*/
 	class ListIter
 	{
 	public:
@@ -76,6 +79,9 @@ public:
 
 	typedef ListIter iterator;
 
+	/*
+	* Reverse Iterator for Circular Linked List
+	*/
 	class ListReverseIter
 	{
 	public:
@@ -110,34 +116,94 @@ public:
 
 	~CircularLinkedList();
 
+	/*
+	* Precondition: none
+	* Postcondition: clears list
+	*/
 	void Clear();
 
+	/*
+	* Precondition: give size
+	* Postcondition: restructures list to given size
+	*/
 	void Resize(size_t p_NewSize);
 
+	/*
+	* Precondition: pass file name
+	* Postcondition: pushes back all file elements
+	*/
 	bool PushFileBack(const char* p_FileName);
 
+	/*
+	* Precondition: pass file name
+	* Postcondition: pushes front all file elements
+	*/
 	bool PushFileFront(const char* p_FileName);
 
+	/*
+	* Precondition: Pass element
+	* Postcondition: pushes element to the front
+	*/
 	void PushFront(const value_type& p_NewElement);
 
+	/*
+	* Precondition: List must have an element
+	* Postcondition: pops the front element
+	*/
 	void PopFront();
 
+	/*
+	* Precondition: List must have an element
+	* Postcondition: pops the front element
+	*/
 	value_type& Front();
 
+	/*
+	* Precondition: List must have an element
+	* Postcondition: pops the front element
+	*/
 	value_type& Back();
 
+	/*
+	* Precondition: List must have an element
+	* Postcondition: pops the back element
+	*/
 	void PopBack();
 
+	/*
+	* Precondition: pass element
+	* Postcondition: pushes element to the back
+	*/
 	void PushBack(const value_type& p_NewElement);
 
+	/*
+	* Precondition: none
+	* Postcondition: returns size of list
+	*/
 	size_t GetSize() const;
 	
+	/*
+	* Precondition: pass element and index
+	* Postcondition: inserts element at index
+	*/
 	void Insert(value_type p_NewElement,  size_t p_Index);
 
+	/*
+	* Precondition: List must have an element
+	* Postcondition: Deletes element at index
+	*/
 	void DeleteAt(size_t p_Index);
 
+	/*
+	* Precondition: List must have an element
+	* Postcondition: deletes element at iterator
+	*/
 	void DeleteAt(iterator p_Iter);
 
+	/*
+	* Precondition: List must have an element
+	* Postcondition: deletes elements to and from iterators
+	*/
 	void DeleteRange(iterator p_Begin, iterator p_End);
 
 	void Swap(CircularLinkedList& p_Other);

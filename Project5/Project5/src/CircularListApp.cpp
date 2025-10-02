@@ -201,6 +201,7 @@ void CircularListApp::HandleInput(char p_Input)
 		m_List.Sort();
 		break;
 	case '0':
+		m_MenuState = MenuState::Exited;
 		break;
 	}
 }

@@ -126,24 +126,36 @@
     <ClCompile Include="src\CircularListApp.cpp" />
     <ClCompile Include="src\CircularLinkedList.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\DoublyListApp.cpp" />
     <ClCompile Include="src\ExceptionInterface.cpp" />
     <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\listHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PartnerIntegrationApp.cpp" />
     <ClCompile Include="src\SinglyListApp.cpp" />
     <ClCompile Include="src\Student.cpp" />
     <ClCompile Include="src\SubApp.cpp" />
     <ClCompile Include="src\VectorContainerApp.cpp" />
+    <ClCompile Include="src\vectorHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CircularListApp.h" />
     <ClInclude Include="src\CircularLinkedList.h" />
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\containerHandler.h" />
+    <ClInclude Include="src\DoublyListApp.h" />
     <ClInclude Include="src\ExceptionInterface.h" />
     <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\listHandler.h" />
+    <ClInclude Include="src\PartnerIntegrationApp.h" />
     <ClInclude Include="src\SinglyListApp.h" />
     <ClInclude Include="src\Student.h" />
     <ClInclude Include="src\SubApp.h" />
     <ClInclude Include="src\VectorContainerApp.h" />
+    <ClInclude Include="src\vectorHandler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\input.dat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

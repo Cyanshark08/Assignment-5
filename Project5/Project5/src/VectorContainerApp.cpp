@@ -18,7 +18,7 @@ VectorContainerApp::VectorContainerApp() : SubApp(AppID::VectorContainerApp) {
 }
 
 void VectorContainerApp::Run() {
-    while (m_MenuState != MenuState::Exited) { 
+    while (m_MenuState != MenuState::Exited) {
 
         std::system("cls");
 
@@ -56,13 +56,13 @@ void VectorContainerApp::Run() {
 }
 
 void VectorContainerApp::Clean() {
-    m_IntVector.clear();
+    m_Vector.clear();
     m_DemoList.clear();
     m_MenuState = MenuState::Exited;
 }
 
 void VectorContainerApp::Restart() {
-    m_IntVector.clear();
+    m_Vector.clear();
     m_DemoList.clear();
     m_MenuState = MenuState::Selection;
 }
@@ -78,17 +78,17 @@ void VectorContainerApp::HandleInput(char p_Input) {
         case 'F': frontBackVector(); break;
         case 'G': frontBackVector(); break; // Handles both F and G
         case 'H': accessElement(); break;
-        case 'I': iterateVector(); break;
-        case 'J': iterateVector(); break; // Handles both I and J
-        case 'K': iterateVector(); break; // Handles display with iterators
-        case 'L': reverseIterateVector(); break;
-        case 'M': reverseIterateVector(); break; // Handles both L and M
-        case 'N': reverseIterateVector(); break; // Handles reverse display
-        case 'O': eraseElement(); break;
-        case 'P': eraseRange(); break;
-        case 'Q': insertElement(); break;
-        case 'R': swapVectors(); break;
-        case 'S': sortVector(); break;
+        case 'I': beginIterator(); break;    // Shows iterator to first element
+        case 'J': endIterator(); break;      // Shows iterator to past-the-end element
+        case 'K': displayWithIterators(); break; // Shows all elements with addresses
+        case 'L': rbeginIterator(); break;   // Shows reverse iterator to last element
+        case 'M': rendIterator(); break;     // Shows reverse iterator before first element
+        case 'N': displayWithReverseIterators(); break; // Shows all elements in reverse with addresses
+        case 'O': eraseElement(); break;     // Removes single element using iterator
+        case 'P': eraseRange(); break;       // Removes range using iterators
+        case 'Q': insertElement(); break;    // Insert new entry at iterator
+        case 'R': swapVectors(); break;      // Exchanges content with another vector
+        case 'S': sortVector(); break;       // Sorts the vector
         case '0':
             m_MenuState = MenuState::Exited;
             return;
@@ -107,7 +107,7 @@ void VectorContainerApp::HandleInput(char p_Input) {
 * Postcondition: Vector is empty, all elements are destroyed
 */
 void VectorContainerApp::clearVector() {
-    m_IntVector.clear();
+    m_Vector.clear();
     std::cout << "\n\t\tVector cleared successfully.";
 }
 
@@ -117,9 +117,9 @@ void VectorContainerApp::clearVector() {
 */
 void VectorContainerApp::reserveVector() {
     size_t n = Input::inputInteger("\n\t\tEnter capacity to reserve: ", true);
-    m_IntVector.reserve(n);
+    m_Vector.reserve(n);
     std::cout << "\n\t\tCapacity reserved: " << n;
-    std::cout << "\n\t\tCurrent capacity: " << m_IntVector.capacity();
+    std::cout << "\n\t\tCurrent capacity: " << m_Vector.capacity();
 }
 
 /*
@@ -128,9 +128,8 @@ void VectorContainerApp::reserveVector() {
 */
 void VectorContainerApp::resizeVector() {
     size_t n = Input::inputInteger("\n\t\tEnter new size: ", true);
-    int value = Input::inputInteger("\t\tEnter value for new elements: ");
-    m_IntVector.resize(n, value);
-    std::cout << "\n\t\tVector resized to: " << n;
+    m_Vector.resize(n, Student());
+    std::cout << "\n\t\tVector resized to: " << n << " with default values.";
 }
 
 /*
@@ -138,9 +137,9 @@ void VectorContainerApp::resizeVector() {
 * Postcondition: Last element is removed from vector, size decreases by 1
 */
 void VectorContainerApp::popBackVector() {
-    if (!m_IntVector.empty()) {
-        int lastElement = m_IntVector.back();
-        m_IntVector.pop_back();
+    if (!m_Vector.empty()) {
+        Student lastElement = m_Vector.back();
+        m_Vector.pop_back();
         std::cout << "\n\t\tLast element (" << lastElement << ") popped successfully.";
     }
     else {
@@ -153,9 +152,9 @@ void VectorContainerApp::popBackVector() {
 * Postcondition: First and last elements are displayed, vector remains unchanged
 */
 void VectorContainerApp::frontBackVector() {
-    if (!m_IntVector.empty()) {
-        std::cout << "\n\t\tFront element: " << m_IntVector.front();
-        std::cout << "\n\t\tBack element: " << m_IntVector.back();
+    if (!m_Vector.empty()) {
+        std::cout << "\n\t\tFront element: " << m_Vector.front();
+        std::cout << "\n\t\tBack element: " << m_Vector.back();
     }
     else {
         std::cout << "\n\t\tERROR: Vector is empty.";
@@ -167,56 +166,125 @@ void VectorContainerApp::frontBackVector() {
 * Postcondition: Element at specified index is displayed, vector remains unchanged
 */
 void VectorContainerApp::accessElement() {
-    if (m_IntVector.empty()) {
+    if (m_Vector.empty()) {
         std::cout << "\n\t\tERROR: Vector is empty.";
         return;
     }
-    size_t index = Input::inputInteger("\n\t\tEnter index: ", 0, (int)m_IntVector.size() - 1);
+    size_t index = Input::inputInteger("\n\t\tEnter index: ", 0, (int)m_Vector.size() - 1);
     char choice = Input::inputChar("\t\tUse at() (A) or operator[] (B)? ", "AB");
     if (choice == 'A') {
-        std::cout << "\n\t\tElement at index " << index << ": " << m_IntVector.at(index);
+        std::cout << "\n\t\tElement at index " << index << ": " << m_Vector.at(index);
     }
     else {
-        std::cout << "\n\t\tElement at index " << index << ": " << m_IntVector[index];
+        std::cout << "\n\t\tElement at index " << index << ": " << m_Vector[index];
     }
-}
-
-/*
-* Precondition: Vector exists
-* Postcondition: All elements are displayed using iterators, vector remains unchanged
-*/
-void VectorContainerApp::iterateVector() {
-    if (m_IntVector.empty()) {
-        std::cout << "\n\t\tERROR: Vector is empty.";
-        return;
-    }
-
-    std::cout << "\n\t\tElements using begin() and end(): ";
-    for (auto it = m_IntVector.begin(); it != m_IntVector.end(); ++it) {
-        std::cout << *it << " ";
-    }
-
-    std::cout << "\n\t\tbegin() points to: " << *m_IntVector.begin();
-    std::cout << "\n\t\tend() points past the last element";
 }
 
 /*
 * Precondition: Vector exists and is not empty
-* Postcondition: All elements are displayed in reverse order using reverse iterators
+* Postcondition: Iterator to first element is displayed with address
 */
-void VectorContainerApp::reverseIterateVector() {
-    if (m_IntVector.empty()) {
+void VectorContainerApp::beginIterator() {
+    if (m_Vector.empty()) {
         std::cout << "\n\t\tERROR: Vector is empty.";
         return;
     }
 
-    std::cout << "\n\t\tElements in reverse using rbegin() and rend(): ";
-    for (auto it = m_IntVector.rbegin(); it != m_IntVector.rend(); ++it) {
-        std::cout << *it << " ";
+    // Get iterator to first element and display its address
+    auto it = m_Vector.begin();
+    Student* ptr = &(*it);
+
+    std::cout << "\n\t\tThe iterator referring the first element: " << ptr << "(" << *it << ")";
+}
+
+/*
+* Precondition: Vector exists and is not empty
+* Postcondition: Iterator to past-the-end element is displayed with address
+*/
+void VectorContainerApp::endIterator() {
+    if (m_Vector.empty()) {
+        std::cout << "\n\t\tERROR: Vector is empty.";
+        return;
     }
 
-    std::cout << "\n\t\trbegin() points to: " << *m_IntVector.rbegin();
-    std::cout << "\n\t\trend() points before first element";
+    // Get iterator to past-the-end element (cannot dereference it)
+    auto it = m_Vector.end();
+    Student* ptr = &(*(m_Vector.begin())) + m_Vector.size(); // Calculate past-the-end address
+
+    std::cout << "\n\t\tThe iterator referring to the past-the-end element: " << ptr;
+}
+
+/*
+* Precondition: Vector exists
+* Postcondition: All elements are displayed using iterators with their addresses
+*/
+void VectorContainerApp::displayWithIterators() {
+    if (m_Vector.empty()) {
+        std::cout << "\n\t\tERROR: Vector is empty.";
+        return;
+    }
+
+    std::cout << "\n\t\tUsing begin() and end(), the vector contains:";
+    int index = 0;
+    for (auto it = m_Vector.begin(); it != m_Vector.end(); ++it, ++index) {
+        Student* ptr = &(*it);
+        std::cout << "\n\t\t" << ptr << " (" << *it << ")";
+    }
+}
+
+/*
+* Precondition: Vector exists and is not empty
+* Postcondition: Reverse iterator to last element is displayed with address and data
+*/
+void VectorContainerApp::rbeginIterator() {
+    if (m_Vector.empty()) {
+        std::cout << "\n\t\tERROR: Vector is empty.";
+        return;
+    }
+
+    // Get reverse iterator to last element and display its address and data
+    auto it = m_Vector.rbegin();
+    Student* ptr = &(*it);
+
+    std::cout << "\n\t\tThe reverse iterator pointing to the last element: " << ptr << "(" << *it << ")";
+}
+
+/*
+* Precondition: Vector exists and is not empty
+* Postcondition: Reverse iterator to theoretical element before first is displayed with address
+*/
+void VectorContainerApp::rendIterator() {
+    if (m_Vector.empty()) {
+        std::cout << "\n\t\tERROR: Vector is empty.";
+        return;
+    }
+
+    // Get reverse iterator to theoretical element before first (cannot dereference it)
+    auto it = m_Vector.rend();
+
+    // Calculate the address for rend() (theoretical element before first)
+    Student* firstElementPtr = &(m_Vector.front());
+    Student* rendPtr = firstElementPtr - 1; // Theoretical position before first
+
+    std::cout << "\n\t\tThe reverse iterator pointing to the theoretical element preceding the first element in the vector: " << rendPtr;
+}
+
+/*
+* Precondition: Vector exists and is not empty
+* Postcondition: All elements are displayed in reverse order using reverse iterators with addresses
+*/
+void VectorContainerApp::displayWithReverseIterators() {
+    if (m_Vector.empty()) {
+        std::cout << "\n\t\tERROR: Vector is empty.";
+        return;
+    }
+
+    std::cout << "\n\t\tElements in reverse using rbegin() and rend(): \n";
+    int index = m_Vector.size() - 1;
+    for (auto it = m_Vector.rbegin(); it != m_Vector.rend(); ++it, --index) {
+        Student* ptr = &(*it);
+        std::cout << "\t\t[" << index << "] " << ptr << " (" << *it << ")\n";
+    }
 }
 
 /*
@@ -224,16 +292,22 @@ void VectorContainerApp::reverseIterateVector() {
 * Postcondition: Element at specified position is removed, size decreases by 1
 */
 void VectorContainerApp::eraseElement() {
-    if (m_IntVector.empty()) {
+    if (m_Vector.empty()) {
         std::cout << "\n\t\tERROR: Vector is empty.";
         return;
     }
-    size_t index = Input::inputInteger("\n\t\tEnter index to erase: ", 0, (int)m_IntVector.size() - 1);
-    auto it = m_IntVector.begin();
+
+    size_t index = Input::inputInteger("\n\t\tEnter index to erase: ", 0, (int)m_Vector.size() - 1);
+    auto it = m_Vector.begin();
     std::advance(it, index);
-    int erasedValue = *it;
-    m_IntVector.erase(it);
-    std::cout << "\n\t\tElement " << erasedValue << " at index " << index << " erased successfully.";
+
+    // Get the address of the element to be erased
+    Student* ptr = &(*it);
+
+    Student erasedValue = *it;
+    m_Vector.erase(it);
+
+    std::cout << "\n\t\tAn element after the begin iterator " << ptr << " has been removed.";
 }
 
 /*
@@ -241,20 +315,26 @@ void VectorContainerApp::eraseElement() {
 * Postcondition: Elements in specified range are removed, size decreases accordingly
 */
 void VectorContainerApp::eraseRange() {
-    if (m_IntVector.empty()) {
+    if (m_Vector.empty()) {
         std::cout << "\n\t\tERROR: Vector is empty.";
         return;
     }
-    size_t start = Input::inputInteger("\n\t\tEnter start index: ", 0, (int)m_IntVector.size() - 1);
-    size_t end = Input::inputInteger("\t\tEnter end index: ", (int)start, (int)m_IntVector.size() - 1);
 
-    auto start_it = m_IntVector.begin();
+    size_t start = Input::inputInteger("\n\t\tEnter start index: ", 0, (int)m_Vector.size() - 1);
+    size_t end = Input::inputInteger("\t\tEnter end index: ", (int)start, (int)m_Vector.size() - 1);
+
+    auto start_it = m_Vector.begin();
     std::advance(start_it, start);
-    auto end_it = m_IntVector.begin();
+    auto end_it = m_Vector.begin();
     std::advance(end_it, end + 1);
 
-    m_IntVector.erase(start_it, end_it);
-    std::cout << "\n\t\tElements from index " << start << " to " << end << " erased successfully.";
+    // Get addresses before erasing
+    Student* start_ptr = &(*start_it);
+    Student* end_ptr = &(*(m_Vector.begin())) + m_Vector.size(); // Calculate end address
+
+    m_Vector.erase(start_it, end_it);
+
+    std::cout << "\n\t\tALL elements starting at begin iterator " << start_ptr << " and going up to end iterator " << end_ptr << " have been removed";
 }
 
 /*
@@ -262,18 +342,14 @@ void VectorContainerApp::eraseRange() {
 * Postcondition: New element is inserted at specified position, size increases by 1
 */
 void VectorContainerApp::insertElement() {
-    if (m_IntVector.empty()) {
-        std::cout << "\n\t\tERROR: Vector is empty.";
-        return;
-    }
-    size_t index = Input::inputInteger("\n\t\tEnter index to insert at: ", 0, (int)m_IntVector.size());
-    int value = Input::inputInteger("\t\tEnter value to insert: ");
+    size_t index = Input::inputInteger("\n\t\tEnter index to insert at: ", 0, (int)m_Vector.size());
+    Student temp = this->getStudent();
 
-    auto it = m_IntVector.begin();
+    auto it = m_Vector.begin();
     std::advance(it, index);
-    m_IntVector.insert(it, value);
+    m_Vector.insert(it, temp);
 
-    std::cout << "\n\t\tValue " << value << " inserted at index " << index;
+    std::cout << "\n\t\tValue " << temp << " inserted at index " << index;
 }
 
 /*
@@ -281,22 +357,69 @@ void VectorContainerApp::insertElement() {
 * Postcondition: Contents of the two vectors are exchanged
 */
 void VectorContainerApp::swapVectors() {
-    std::vector<int> otherVector;
-    otherVector.push_back(100);
-    otherVector.push_back(200);
-    otherVector.push_back(300);
+    // Create another vector with some sample data
+    std::vector<Student> otherVector;
 
-    std::cout << "\n\t\tBefore swap - Current vector: ";
-    for (const auto& elem : m_IntVector) std::cout << elem << " ";
-    std::cout << "\n\t\tBefore swap - Other vector: ";
-    for (const auto& elem : otherVector) std::cout << elem << " ";
+    // Add some sample students to the other vector
+    Student s1, s2, s3;
+    s1.setName("John Doe"); s1.setGradeLevel("Senior"); s1.setGPA(3.8);
+    s2.setName("Jane Smith"); s2.setGradeLevel("Junior"); s2.setGPA(3.9);
+    s3.setName("Bob Wilson"); s3.setGradeLevel("Sophomore"); s3.setGPA(3.2);
 
-    m_IntVector.swap(otherVector);
+    otherVector.push_back(s1);
+    otherVector.push_back(s2);
+    otherVector.push_back(s3);
 
-    std::cout << "\n\t\tAfter swap - Current vector: ";
-    for (const auto& elem : m_IntVector) std::cout << elem << " ";
-    std::cout << "\n\t\tAfter swap - Other vector: ";
-    for (const auto& elem : otherVector) std::cout << elem << " ";
+    std::cout << "\n\t\tvector (v2) is initially empty.";
+    std::cout << "\n\t\tvector (v1) is empty after swapped with vector (v2).";
+    std::cout << "\n\t\tvector (v2) after swapped with vector (v1).";
+
+    // Display current vector before swap
+    std::cout << "\n\n\t\tCurrent vector before swap:";
+    if (m_Vector.empty()) {
+        std::cout << "\n\t\t\t[Empty]";
+    }
+    else {
+        for (size_t i = 0; i < m_Vector.size(); ++i) {
+            std::cout << "\n\t\t\t[" << i << "] " << m_Vector[i];
+        }
+    }
+
+    // Display other vector before swap
+    std::cout << "\n\n\t\tOther vector before swap:";
+    if (otherVector.empty()) {
+        std::cout << "\n\t\t\t[Empty]";
+    }
+    else {
+        for (size_t i = 0; i < otherVector.size(); ++i) {
+            std::cout << "\n\t\t\t[" << i << "] " << otherVector[i];
+        }
+    }
+
+    // Perform the swap
+    m_Vector.swap(otherVector);
+
+    // Display current vector after swap
+    std::cout << "\n\n\t\tCurrent vector after swap:";
+    if (m_Vector.empty()) {
+        std::cout << "\n\t\t\t[Empty]";
+    }
+    else {
+        for (size_t i = 0; i < m_Vector.size(); ++i) {
+            std::cout << "\n\t\t\t[" << i << "] " << m_Vector[i];
+        }
+    }
+
+    // Display other vector after swap
+    std::cout << "\n\n\t\tOther vector after swap:";
+    if (otherVector.empty()) {
+        std::cout << "\n\t\t\t[Empty]";
+    }
+    else {
+        for (size_t i = 0; i < otherVector.size(); ++i) {
+            std::cout << "\n\t\t\t[" << i << "] " << otherVector[i];
+        }
+    }
 }
 
 /*
@@ -304,60 +427,87 @@ void VectorContainerApp::swapVectors() {
 * Postcondition: Vector elements are sorted in ascending order
 */
 void VectorContainerApp::sortVector() {
-    if (m_IntVector.empty()) {
+    if (m_Vector.empty()) {
         std::cout << "\n\t\tERROR: Vector is empty.";
         return;
     }
 
     std::cout << "\n\t\tBefore sorting: ";
-    for (const auto& elem : m_IntVector) std::cout << elem << " ";
+    for (const auto& elem : m_Vector) std::cout << elem << " ";
 
-    std::sort(m_IntVector.begin(), m_IntVector.end());
+    std::sort(m_Vector.begin(), m_Vector.end());
 
     std::cout << "\n\t\tAfter sorting: ";
-    for (const auto& elem : m_IntVector) std::cout << elem << " ";
+    for (const auto& elem : m_Vector) std::cout << elem << " ";
 }
 
 /*
-* Precondition: input.dat file exists and contains valid integers
-* Postcondition: Elements from file are added to vector using push_back
+* Precondition: input.dat file exists and contains valid student data in format: Name,GradeLevel,GPA
+* Postcondition: Student elements from file are added to vector using push_back
 */
 void VectorContainerApp::readFromFile() {
     std::ifstream file("input.dat");
     if (!file) {
         std::cout << "\n\t\tERROR: Could not open input.dat file.";
+        std::cout << "\n\t\tMake sure input.dat is in the same directory as the executable.";
         return;
     }
 
-    int value;
     int count = 0;
-    while (file >> value) {
-        m_IntVector.push_back(value);
-        count++;
+    std::string line;
+
+    while (std::getline(file, line)) {
+        // Parse each line: Name,GradeLevel,GPA
+        size_t firstComma = line.find(',');
+        size_t secondComma = line.find(',', firstComma + 1);
+
+        if (firstComma != std::string::npos && secondComma != std::string::npos) {
+            std::string name = line.substr(0, firstComma);
+            std::string gradeLevel = line.substr(firstComma + 1, secondComma - firstComma - 1);
+            std::string gpaStr = line.substr(secondComma + 1);
+
+            try {
+                double gpa = std::stod(gpaStr);
+
+                Student student;
+                student.setName(name);
+                student.setGradeLevel(gradeLevel);
+                student.setGPA(gpa);
+
+                m_Vector.push_back(student);
+                count++;
+            }
+            catch (const std::exception& e) {
+                std::cout << "\n\t\tWarning: Could not parse GPA from line: " << line;
+            }
+        }
+        else {
+            std::cout << "\n\t\tWarning: Invalid format in line: " << line;
+        }
     }
+
     file.close();
 
-    std::cout << "\n\t\tSuccessfully read " << count << " elements from input.dat";
-
-    // Also demonstrate list operations
-    m_DemoList.assign(m_IntVector.begin(), m_IntVector.end());
-    std::cout << "\n\t\tAlso created a list with the same elements for demonstration.";
+    if (count > 0) {
+        std::cout << "\n\t\tSuccessfully read " << count << " students from input.dat";
+    }
+    else {
+        std::cout << "\n\t\tNo valid student data found in input.dat";
+    }
 }
 
 void VectorContainerApp::displayVector() const {
     std::cout << "\n\n\tCurrent Vector: ";
-    if (m_IntVector.empty()) {
+    if (m_Vector.empty()) {
         std::cout << "Empty";
     }
     else {
-        std::cout << "[ ";
-        for (size_t i = 0; i < m_IntVector.size(); ++i) {
-            std::cout << m_IntVector[i];
-            if (i < m_IntVector.size() - 1) std::cout << ", ";
+        std::cout << "\n";
+        for (size_t i = 0; i < m_Vector.size(); ++i) {
+            std::cout << "\t[" << i << "] " << m_Vector[i] << "\n";
         }
-        std::cout << " ]";
     }
-    std::cout << "\n\tSize: " << m_IntVector.size() << ", Capacity: " << m_IntVector.capacity();
+    std::cout << "\n\tSize: " << m_Vector.size() << ", Capacity: " << m_Vector.capacity();
 }
 
 void VectorContainerApp::displayList() const {
@@ -373,4 +523,22 @@ void VectorContainerApp::displayList() const {
         std::cout << "]";
     }
     std::cout << "\n\tList Size: " << m_DemoList.size();
+}
+
+Student VectorContainerApp::getStudent() const
+{
+    // get student info
+    std::string name = Input::inputString("\n\t\tEnter a new student name: ", true);
+    int level = Input::inputInteger("\t\tEnter their grade level (1-Freshman, 2-Sophmore, 3-Junior, or 4-Senior): ", 1, 4);
+    double gpa = Input::inputDouble("\t\tEnter their gpa (0.0...4.0): ", 0.0, 4.0);
+
+    // set the student
+    std::string levels[4] = { "Freshmen", "Sophmore", "Junior", "Senior" };
+
+    Student temp;
+    temp.setName(name);
+    temp.setGradeLevel(levels[level - 1]);
+    temp.setGPA(gpa);
+
+    return temp;
 }

@@ -1,6 +1,7 @@
 #include "SinglyListApp.h"
 #include "Input.h"
 #include <iterator>
+#include "CircularListApp.h"
 
 
 SinglyListApp::SinglyListApp()
@@ -142,7 +143,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		{
 			// move iterator to the 2nd to last node
 			auto it = m_List.begin();
-			advance(it, numOfNodes - 2);
+			std::advance(it, numOfNodes - 2);
 
 			// pop (erase) the last element
 			m_List.erase_after(it);
@@ -352,6 +353,7 @@ void SinglyListApp::HandleInput(char p_Input)
 	std::cout << "\n";
 	std::system("pause");
 }
+
 
 Student SinglyListApp::getStudent() const
 {

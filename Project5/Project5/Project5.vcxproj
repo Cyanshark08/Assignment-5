@@ -130,6 +130,7 @@
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SinglyListApp.cpp" />
+    <ClCompile Include="src\Student.cpp" />
     <ClCompile Include="src\SubApp.cpp" />
     <ClCompile Include="src\VectorContainerApp.cpp" />
   </ItemGroup>

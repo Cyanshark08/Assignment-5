@@ -1,4 +1,5 @@
 #include "CircularLinkedList.h"
+#include <algorithm>
 
 /*
 * 
@@ -20,18 +21,6 @@
 
 int main()
 {
-	circular_list list;
-
-	list.PushBack(12);
-	list.PushBack(13);
-	list.PushBack(14);
-	list.PushBack(15);
-
-	for (const auto& ele : list)
-	{
-		printf("\n\t%d");
-	}
-
 	Application app;
 
 	app.Run();

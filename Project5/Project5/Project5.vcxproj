@@ -126,6 +126,7 @@
     <ClCompile Include="src\CircularListApp.cpp" />
     <ClCompile Include="src\CircularLinkedList.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\DoublyListApp.cpp" />
     <ClCompile Include="src\ExceptionInterface.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\listHandler.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="src\CircularLinkedList.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\containerHandler.h" />
+    <ClInclude Include="src\DoublyListApp.h" />
     <ClInclude Include="src\ExceptionInterface.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\listHandler.h" />

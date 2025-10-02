@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "VectorContainerApp.h"
 #include "SinglyListApp.h"
+#include "DoublyListApp.h"
 #include "PartnerIntegrationApp.h"  // Include the new integrated app
 #include <string>
 #include "Input.h"
@@ -46,11 +47,8 @@ void Application::Run()
             }
             case AppID::DoublyListApp:
             {
-                // DoublyListApp doublyListApp;
-                // doublyListApp.Run();
-                std::cout << "\n\tDoubly Linked List App - Not yet implemented";
-                std::cout << "\n";
-                std::system("pause");
+                DoublyListApp doublyListApp;
+                doublyListApp.Run();
                 break;
             }
             case AppID::CircularListApp:

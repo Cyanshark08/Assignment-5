@@ -410,7 +410,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		// check if empty list
 		if (m_List.empty())
 		{
-			std::cout << "\n\t\tReveresed the empty list.";
+			std::cout << "\n\t\tReversed the empty list.";
 			break;
 		}
 

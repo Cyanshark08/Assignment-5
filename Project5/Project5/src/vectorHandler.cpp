@@ -15,13 +15,15 @@ void vectorHandler::addStudent(const Student& s) {
     students.push_back(s);
 }
 
-void vectorHandler::deleteStudent(const Student& s) {
+bool vectorHandler::deleteStudent(const Student& s) {
+    size_t initialSize = students.size();
     students.erase(std::remove(students.begin(), students.end(), s), students.end());
+    return students.size() < initialSize; // Return true if deletion occurred
 }
 
 void vectorHandler::displayStudents() const {
     for (const auto& s : students) {
-        std::cout << s << std::endl;  // Uses your operator<<
+        std::cout << s << std::endl;
     }
 }
 

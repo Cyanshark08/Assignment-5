@@ -8,11 +8,11 @@
 
 class vectorHandler : public containerHandler {
 private:
-    std::vector<Student> students;  // Use your Student class
+    std::vector<Student> students;
 
 public:
     void addStudent(const Student& s) override;
-    void deleteStudent(const Student& s) override;
+    bool deleteStudent(const Student& s) override;  // Changed to return bool
     void displayStudents() const override;
     void displayFrequencies() const override;
     void loadFromFile(const std::string& filename) override;

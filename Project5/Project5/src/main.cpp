@@ -6,8 +6,10 @@
 *  - Andrew Nguyen
 *  - Jaime Gutierrez
 *  - Landon Mendoza
+*  - Daisy Mateo
+*  - Tony Nguyen
 * 
-* Date: 9/15/2025
+* Date: 10/1/2025
 * 
 * Description: Chapter 5 Assignment (Linked Lists)
 * In this project, we demonstrated and exemplified the
@@ -20,17 +22,6 @@
 
 int main()
 {
-	circular_list list;
-
-	list.PushBack(12);
-	list.PushBack(13);
-	list.PushBack(14);
-	list.PushBack(15);
-
-	for (const auto& ele : list)
-	{
-		printf("\n\t%d");
-	}
 
 	Application app;
 

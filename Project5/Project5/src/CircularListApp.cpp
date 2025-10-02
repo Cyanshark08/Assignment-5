@@ -41,7 +41,7 @@ void CircularListApp::Run()
 		std::cout << "\n\t\t0. Return";
 		std::cout << "\n\t" << std::string(110, 205);
 
-		HandleInput(Input::inputChar("\n\t\tOption: ", "ABCDEFGHIJKLMNOPQR0"));
+		HandleInput(Input::inputChar("\n\t\tOption: ", "ABCDEFGHIJKLMNOPQRS0"));
 
 		std::system("pause");
 	}
@@ -133,7 +133,7 @@ void CircularListApp::HandleInput(char p_Input)
 	case 'I':
 		try
 		{
-			std::cout << "\n\tThe iterator referring to the first element: " << std::hex << &*m_List.begin() << "(" << &*m_List.begin() << ")\n\t";
+			std::cout << "\n\tThe iterator referring to the first element: " << std::hex << &*m_List.begin() << "(" << *m_List.begin() << ")\n\t";
 		}
 		catch (const ExceptionInterface& e)
 		{
@@ -157,7 +157,7 @@ void CircularListApp::HandleInput(char p_Input)
 			std::cout << "\n\t" << ele << "\n\t";
 		break;
 	case 'L':
-		std::cout << "\n\tThe iterator referring to the reverse first element: " << std::hex << &*m_List.rbegin() << "(" << &*m_List.rbegin() << ")\n\t";
+		std::cout << "\n\tThe iterator referring to the reverse first element: " << std::hex << &*m_List.rbegin() << "(" << *m_List.rbegin() << ")\n\t";
 		break;
 	case 'M':
 		std::cout << "\n\tThe iterator referring to the past-the-end element: " << std::hex << &*m_List.rend() << "\n\t";

@@ -2,6 +2,9 @@
 #include "ExceptionInterface.h"
 #include <iterator>
 #include <sstream>
+#include <fstream>
+#include "Input.h"
+
 
 CircularLinkedList::ListIter::ListIter(CircularLinkedList& p_CircularLinkedList, Node* p_CurrentNode, size_t p_Increment)
 	: m_CircularLinkedList(p_CircularLinkedList),
@@ -304,12 +307,84 @@ void CircularLinkedList::Resize(size_t p_NewSize)
 
 bool CircularLinkedList::PushFileBack(const char* p_FileName)
 {
-	return false;
+	// get the file name
+	std::string fileName = p_FileName;
+	std::fstream file;
+
+	// open the file to read
+	file.open(fileName, std::ios::in);
+
+	// check if successful open
+	if (!file)
+	{
+		std::cout << "\n\tERROR: Could not open file.";
+		return false;
+	}
+
+	// read the file
+	std::string line;
+	while (std::getline(file, line, '\n'))
+	{
+		std::istringstream tokens(line);
+		std::string name, level, gpa;
+		Student temp;
+
+		// retrieve the data
+		std::getline(tokens, name, ',');
+		std::getline(tokens, level, ',');
+		std::getline(tokens, gpa);
+
+		// set temp
+		temp.setName(name);
+		temp.setGradeLevel(level);
+		temp.setGPA(std::stod(gpa));
+
+		// push to the back of the list
+		this->PushBack(temp);
+	}
+
+	return true;
 }
 
 bool CircularLinkedList::PushFileFront(const char* p_FileName)
 {
-	return false;
+	// get the file name
+	std::string fileName = p_FileName;
+	std::fstream file;
+
+	// open the file to read
+	file.open(fileName, std::ios::in);
+
+	// check if successful open
+	if (!file)
+	{
+		std::cout << "\n\tERROR: Could not open file.";
+		return false;
+	}
+
+	// read the file
+	std::string line;
+	while (std::getline(file, line, '\n'))
+	{
+		std::istringstream tokens(line);
+		std::string name, level, gpa;
+		Student temp;
+
+		// retrieve the data
+		std::getline(tokens, name, ',');
+		std::getline(tokens, level, ',');
+		std::getline(tokens, gpa);
+
+		// set temp
+		temp.setName(name);
+		temp.setGradeLevel(level);
+		temp.setGPA(std::stod(gpa));
+
+		// push to the back of the list
+		this->PushFront(temp);
+	}
+
+	return true;
 }
 
 void CircularLinkedList::PushFront(const value_type& p_NewElement)

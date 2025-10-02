@@ -1,6 +1,7 @@
 #pragma once
 #include <iterator>
 #include "ExceptionInterface.h"
+#include "Student.h"
 
 /*
 * 
@@ -20,7 +21,7 @@
 * (templates are harder to debug)
 * 
 */
-typedef int t_Type;
+typedef Student t_Type;
 class CircularLinkedList
 {
 public:
@@ -63,6 +64,10 @@ public:
 
 		ListIter& operator=(const ListIter& p_Other);
 
+		size_t GetIncrement() const;
+
+		const Node* GetPtr() const;
+
 	private:
 		Node* m_CurrentNode{ nullptr };
 		CircularLinkedList& m_CircularLinkedList;
@@ -88,6 +93,10 @@ public:
 
 		ListReverseIter& operator=(const ListReverseIter& p_Other);
 
+		size_t GetIncrement() const;
+
+		const Node* GetPtr() const;
+
 	private:
 		Node* m_CurrentNode{ nullptr };
 		CircularLinkedList& m_CircularLinkedList;
@@ -105,13 +114,17 @@ public:
 
 	void Resize(size_t p_NewSize);
 
-	bool ReadFile(const char* p_FileName);
+	bool PushFileBack(const char* p_FileName);
+
+	bool PushFileFront(const char* p_FileName);
 
 	void PushFront(const value_type& p_NewElement);
 
 	void PopFront();
 
 	value_type& Front();
+
+	value_type& Back();
 
 	void PopBack();
 
@@ -123,6 +136,12 @@ public:
 
 	void DeleteAt(size_t p_Index);
 
+	void DeleteAt(iterator p_Iter);
+
+	void DeleteRange(iterator p_Begin, iterator p_End);
+
+	void Swap(CircularLinkedList& p_Other);
+
 	iterator begin();
 
 	iterator end();
@@ -132,6 +151,8 @@ public:
 	reverse_iterator rend();
 
 	value_type& operator [](size_t p_Index);
+
+	void Sort();
 
 public:
 

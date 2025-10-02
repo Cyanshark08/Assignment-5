@@ -270,19 +270,19 @@ Student DoublyListApp::promptStudent() {
 /* ---------- load from file ---------- */
 bool DoublyListApp::loadFromFileFront() {
     ifstream fin(filePath);
-    if (!fin) { cout << "Cannot open file: " << filePath << '\n'; return false; }
+    if (!fin) { cout << "\n\t\tCannot open file: " << filePath << '\n'; return false; }
     string line; Student st; vector<Student> buf;
     while (getline(fin, line)) if (parseStudentLine(line, st)) buf.push_back(st);
     for (auto it = buf.rbegin(); it != buf.rend(); ++it) L.push_front(*it);
-    cout << "Pushed " << buf.size() << " to FRONT from " << filePath << ".\n";
+    cout << "\n\t\tPushed " << buf.size() << " to FRONT from " << filePath << ".\n";
     return true;
 }
 
 bool DoublyListApp::loadFromFileBack() {
     ifstream fin(filePath);
-    if (!fin) { cout << "Cannot open file: " << filePath << '\n'; return false; }
+    if (!fin) { cout << "\n\t\tCannot open file: " << filePath << '\n'; return false; }
     string line; Student st; size_t n = 0;
     while (getline(fin, line)) if (parseStudentLine(line, st)) { L.push_back(st); ++n; }
-    cout << "Pushed " << n << " to BACK from " << filePath << ".\n";
+    cout << "\n\t\tPushed " << n << " to BACK from " << filePath << ".\n";
     return true;
 }

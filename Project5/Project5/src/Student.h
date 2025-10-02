@@ -1,40 +1,30 @@
 #pragma once
 
 #include <iostream>
+#include <limits>
+#include "string"
+#include <unordered_map>
 
 class Student
 {
 public:
 	//default constructor
-	Student() : name("unknown"), gradeLevel("unknown"), GPA(0.0)
-	{}
+	Student();
 
-	Student(const Student &obj)
-		: name(obj.name), gradeLevel(obj.gradeLevel), GPA(obj.GPA)
-	{}
+	Student(const Student &obj);
 
-	//mutator 
-	void setName(const std::string& newName)
-	{
-		name = newName;
-	}
+	Student(const std::string& p_Name, const std::string& p_GradeLevel, double p_GPA);
 
 	//mutator 
-	void setGradeLevel(const std::string& newGradeLevel)
-	{
-		gradeLevel = newGradeLevel;
-	}
+	void setName(const std::string& newName);
 
 	//mutator 
-	void setGPA(double newGPA)
-	{
-		GPA = newGPA;
-	}
+	void setGradeLevel(const std::string& newGradeLevel);
 
-	std::string getName() const
-	{
-		return name;
-	}
+	//mutator 
+	void setGPA(double newGPA);
+
+	std::string getName() const;
 
 	std::string getLevel() const
 	{
@@ -47,32 +37,20 @@ public:
 	}
 
 	//overloading operator <<
-	friend std::ostream& operator <<(std::ostream& outs, const Student& obj)
-	{
-		outs << obj.name << ", " << obj.gradeLevel << ", " << obj.GPA;
-		return outs;
-	}
+	friend std::ostream& operator <<(std::ostream& outs, const Student& obj);
 
 	//overloading operator == 
-	friend bool operator ==(const Student& obj1, const Student& obj2)
-	{
-		if ((obj1.GPA == obj2.GPA) && (obj1.gradeLevel == obj2.gradeLevel) && (obj1.name == obj2.name))
-			return true;
-		else
-			return false;
-	}
+	bool operator==(const Student& p_Other) const;
 
 	//overloading operator <
-	friend bool operator <(const Student& obj1, const Student& obj2)
-	{
-		if (obj1.name < obj2.name)
-			return true;
-		else
-			return false;
-	}
+	bool operator<(const Student& p_Other) const;
+
+	//overloading operator == 
+	Student& operator=(const Student& p_Other);
 
 private:
 	std::string name;
 	std::string gradeLevel;
 	double GPA;
+
 };

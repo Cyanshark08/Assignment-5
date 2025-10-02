@@ -1,14 +1,16 @@
 #include "Application.h"
 #include "VectorContainerApp.h"
 #include "SinglyListApp.h"
+#include "PartnerIntegrationApp.h"  // Include the new integrated app
 #include <string>
 #include "Input.h"
 
 /*
-* Name: Your Name
-* Date: Current Date
+* Name: [Your Name] & [Partner's Name]
+* Date: [Current Date]
 * Description: Main application controller for Chapter 5 Vector and List Container assignment
 *              Handles the main menu navigation and manages sub-application states.
+*              Now includes integrated partner's vector/list application as Option 5.
 */
 
 Application::Application()
@@ -62,11 +64,9 @@ void Application::Run()
             }
             case AppID::VectorListExampleApp:
             {
-                // VectorListExampleApp exampleApp;
-                // exampleApp.Run();
-                std::cout << "\n\tVector/List Example App - Not yet implemented";
-                std::cout << "\n";
-                std::system("pause");
+                // Integrated partner's application
+                PartnerIntegrationApp partnerApp;
+                partnerApp.Run();
                 break;
             }
             case AppID::InvalidApp:
@@ -93,13 +93,13 @@ void Application::Clean()
 void Application::DisplayMainMenu()
 {
     std::system("cls");
-    puts("\n\tCMPR131 Chapter 5: Vector and List Container by Your Name (Current Date)");
+    puts("\n\tCMPR131 Chapter 5: Vector and List Container by Your Name & Partner Name (Current Date)");
     puts(std::string(110, 205).c_str());
     puts("\t1 > Vector Container");
     puts("\t2 > Single-Linked List Container");
     puts("\t3 > Doubly-Linked List Container");
     puts("\t4 > Circular-Linked List Container");
-    puts("\t5 > Application using Vector and/or List Container");
+    puts("\t5 > Application using Vector and/or List Container (Partner's Integration)");
     puts(std::string(110, 196).c_str());
     puts("\t0. Exit");
     puts(std::string(110, 205).c_str());

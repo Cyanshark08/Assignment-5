@@ -2,6 +2,7 @@
 
 #include "SubApp.h"
 #include "Student.h"
+#include "SinglyLinkedList.h"
 #include <iostream>
 #include <forward_list>
 
@@ -30,7 +31,6 @@ private:
 
 private:
 	MenuState m_MenuState;
-	std::forward_list<Student> m_List;
-	int numOfNodes;
+	SinglyLinkedList m_List;
 };
 

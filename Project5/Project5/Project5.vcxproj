@@ -132,6 +132,7 @@
     <ClCompile Include="src\listHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PartnerIntegrationApp.cpp" />
+    <ClCompile Include="src\SinglyLinkedList.cpp" />
     <ClCompile Include="src\SinglyListApp.cpp" />
     <ClCompile Include="src\Student.cpp" />
     <ClCompile Include="src\SubApp.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\listHandler.h" />
     <ClInclude Include="src\PartnerIntegrationApp.h" />
+    <ClInclude Include="src\SinglyLinkedList.h" />
     <ClInclude Include="src\SinglyListApp.h" />
     <ClInclude Include="src\Student.h" />
     <ClInclude Include="src\SubApp.h" />

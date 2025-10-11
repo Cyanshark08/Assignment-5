@@ -76,6 +76,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'C': // insert_after
+	{
 		try
 		{
 			// check if empty list
@@ -94,9 +95,10 @@ void SinglyListApp::HandleInput(char p_Input)
 		catch (const ExceptionInterface &e)
 		{
 			std::cout << e.Message();
-			break;
 		}
 		break;
+
+	}		
 
 	case 'D': // pop_front
 		try
@@ -125,23 +127,28 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'F': // remove
+	{
+		size_t removedElements = 0;
 		try
 		{
 			if (m_List.empty())
 				throw SinglyLinkedList::E_NullList();
 
-			size_t removedElements = m_List.remove(this->getStudent());
-			if (removedElements == 0)
-				std::cout << "\n\t\tNo instance of student found and removed.";
-			else
-				std::cout << "\n\t\tSuccessfully removed " << removedElements << " from the list.";
+			removedElements = m_List.remove(this->getStudent());
 		}
 		catch (const ExceptionInterface &e)
 		{
 			std::cout << e.Message();
+			break;
 		}
-		break;
 
+		if (removedElements == 0)
+			std::cout << "\n\t\tNo instance of student found and removed.";
+		else
+			std::cout << "\n\t\tSuccessfully removed " << removedElements << " from the list.";
+		break;
+	}
+		
 	case 'G': // remove_if()
 	{
 		try
@@ -212,8 +219,6 @@ void SinglyListApp::HandleInput(char p_Input)
 				case '0': return;
 				}
 
-				
-
 				std::cout << "\n";
 				std::system("pause");
 			} while (true);
@@ -221,32 +226,35 @@ void SinglyListApp::HandleInput(char p_Input)
 		catch (const ExceptionInterface &e)
 		{
 			std::cout << e.Message();
-			break;
 		}
 		break;
 	}
 
 	case 'H': // erase_after
+	{
+		size_t index = 0;
 		try
 		{
 			if (m_List.empty())
 				throw SinglyLinkedList::E_NullList();
 
 			// get the position of the index to erase after
-			size_t index = Input::inputInteger("\n\t\tEnter the index (position) to delete the element after: ", 0, m_List.getNumOfElements() - 2);
+			index = Input::inputInteger("\n\t\tEnter the index (position) to delete the element after: ", 0, m_List.getNumOfElements() - 2);
 			if (index > m_List.getNumOfElements() - 2)
 				throw SinglyLinkedList::E_IndexOutOfBounds(index, m_List.getNumOfElements() - 1);
 
 			m_List.erase_after(index);
-			std::cout << "\n\t\tSuccessfully erased the student after index [" << index << "]";
 		}
 		catch (const ExceptionInterface &e)
 		{
 			std::cout << e.Message();
 			break;
 		}
-		break;
 
+		std::cout << "\n\t\tSuccessfully erased the student after index [" << index << "]";
+		break;
+	}
+		
 	case 'I': // change an existing node with new information
 		try
 		{
@@ -255,11 +263,11 @@ void SinglyListApp::HandleInput(char p_Input)
 
 			// get the position of the node to update
 			size_t index = Input::inputInteger("\n\t\tEnter the node (position) of the element to change: ", 0, m_List.getNumOfElements() - 1);
-			if (index >= m_List.getNumOfElements() - 1)
+			if (index >= m_List.getNumOfElements())
 				throw SinglyLinkedList::E_IndexOutOfBounds(index, m_List.getNumOfElements() - 1);
 
 			Student temp = this->getStudent();
-			std::cout << "\n\tNew Student Information: " << temp;
+			std::cout << "\n\t\tNew Student Information: " << temp;
 
 			// ask if the user wants to commit their changes
 			char commit = Input::inputChar("\n\n\t\tDo you want to commit the changes: ", "YN");
@@ -275,7 +283,6 @@ void SinglyListApp::HandleInput(char p_Input)
 		catch (const ExceptionInterface &e)
 		{
 			std::cout << e.Message();
-			break;
 		}
 		break;
 
@@ -287,16 +294,12 @@ void SinglyListApp::HandleInput(char p_Input)
 		catch (const ExceptionInterface &e)
 		{
 			std::cout << e.Message();
-			break;
 		}
 		break;
 
 	case 'K': // begin()
 		try
 		{
-			if (m_List.empty())
-				throw SinglyLinkedList::E_NullList();
-
 			auto it = m_List.begin();
 			std::cout << "\n\t\tIterator pointing to the first element: " << &(*it) << " (" << *it << ")";;
 		}
@@ -306,7 +309,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		}
 		break;
 		
-	case 'L': // back
+	case 'L': // back()
 		try
 		{
 			std::cout << "\n\tLast element in the list: " << m_List.back();
@@ -314,16 +317,12 @@ void SinglyListApp::HandleInput(char p_Input)
 		catch (const ExceptionInterface &e)
 		{
 			std::cout << e.Message();
-			break;
 		}
 		break;
 
-	case 'M':
+	case 'M': // end()
 		try
 		{
-			if (m_List.empty())
-				throw SinglyLinkedList::E_NullList();
-
 			auto it = m_List.begin();
 			std::cout << "\n\t\tIterator referring to the past-the-end element: " << &it;
 		}
@@ -334,12 +333,9 @@ void SinglyListApp::HandleInput(char p_Input)
 		break;
 
 	case 'N': // display all elements
-	{
-		// display the elements by traversing using begin() and end()
 		std::cout << "\n\t\tUsing begin() and end(), the list contains: ";
 		std::cout << m_List;
 		break;
-	}
 
 	case 'O': // sort()
 		m_List.sort();
@@ -359,7 +355,7 @@ void SinglyListApp::HandleInput(char p_Input)
 		std::cout << "\n\t\tSuccessfully resized the list to have " << size << " default elements.";
 		break;
 	}
-
+		
 	case 'R': // clear
 		m_List.clear();
 		std::cout << "\n\t\tSuccessfully cleared the list of elements.";

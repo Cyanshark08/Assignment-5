@@ -177,9 +177,12 @@ Student SinglyLinkedList::front() const
 	return m_List.front();
 }
 
-std::forward_list<Student>::const_iterator SinglyLinkedList::begin() const
+std::forward_list<Student>::iterator SinglyLinkedList::begin()
 {
-	return m_List.cbegin();
+	if (m_List.empty())
+		throw E_NullList();
+
+	return m_List.begin();
 }
 
 Student SinglyLinkedList::back() const
@@ -195,9 +198,12 @@ Student SinglyLinkedList::back() const
 	return *it;
 }
 
-std::forward_list<Student>::const_iterator SinglyLinkedList::end() const
+std::forward_list<Student>::iterator SinglyLinkedList::end()
 {
-	return m_List.cend();
+	if (m_List.empty())
+		throw E_NullList();
+
+	return m_List.end();
 }
 
 void SinglyLinkedList::sort()
@@ -266,9 +272,10 @@ void SinglyLinkedList::push_from_file(std::string m_FileName)
 	file.close();
 }
 
-std::ostream &operator <<(std::ostream &out, const SinglyLinkedList &obj)
+
+std::ostream &operator <<(std::ostream &out, SinglyLinkedList &obj)
 {
-	if (obj.m_List.empty())
+	if (obj.empty())
 	{
 		out << "\n\t\t\tEmpty list.";
 	}
@@ -283,7 +290,6 @@ std::ostream &operator <<(std::ostream &out, const SinglyLinkedList &obj)
 	}
 	return out;
 }
-
 
 
 // Exception Errors
